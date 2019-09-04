@@ -1,0 +1,370 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  	"contentVersion": "1.0.0.0",
+  	"parameters": {
+		"general-adminUsername": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the Administrator of the VMs"
+			}
+    },
+    	"general-adminPassword": {
+			"type": "securestring",
+			"minLength": 12,
+			"metadata": {
+				"description": "Password for the Administrator account of the VMs"
+			}
+		},
+		"general-namePrefix": {
+			"type": "string",
+			"minLength": 3,
+			"maxLength": 7,
+			"metadata": {
+				"description": "System Name for NEXIS Cloud Edition. 3-char min, 7-char max, lowercase alphanumeric"
+			}
+		},
+    "general-newOrExistingVnet": {
+      "type": "string",
+      "metadata": {
+        "description":" New if you choose to create a new Virtual Network. Existing if you choose to use Virtual Network that has already been created. (To create a Vnet outside of this form, please go to the Azure portal and create a VNET under the resource group)"
+      },
+			"defaultValue": "new",
+    		"allowedValues": [
+        		"new",
+        		"existing"
+    		]
+    },
+    "general-vnetName": {
+      "type": "string",
+      "metadata": {
+        "description":"Name of the new or existing Virtual Network (depending on choice above). If you chose Existing above, the name of the Vnet you enter here must match an existing Vnet, or deployment will fail"
+      }
+		},
+		"general-vnetResourceGroup": {
+      "type" : "string",
+      "metadata" : {
+        "description" : "Name of the Resource Group where the existing Vnet is deployed. If you chose Existing above, this field must match the name of an existing resource group that contains the Vnet specified in the \"Vnet Name\" field. If you chose New, enter the name of the Resource Group that you're deploying to."
+      }
+		},
+		"general-subnetName": {
+      "type": "string",
+      "metadata": {
+        "description" : "If you chose New Vnet above, this will be the name of the new subnet in the new Vnet. If you chose Existing Vnet above, this name should match the existing subnet in that Vnet to which the VMs should be deployed, or deployment will fail"
+      },
+			"defaultValue": "default"
+		},
+		"general-addressSpace": {
+      "type": "string",
+      "metadata": {
+        "description" : "If you chose New Vnet above, this will be the address space for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. If you chose Existing Vnet, you can ignore this field"
+      },
+			"defaultValue": "10.0.0.0/16"
+		},
+		"general-addressSubnet": {
+      "type": "string",
+      "metadata": {
+        "description" : "If you chose New Vnet above, this will be the address subnet for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. It must be within the Address Space you configured above, or deployment will fail. If you chose Existing Vnet, you can ignore this field"
+      },
+			"defaultValue": "10.0.0.0/24"
+    },
+		"mediaComposer-vmSize": {
+			"type": "string",
+			"defaultValue": "Standard_NV12s_v3",
+			"metadata": {
+			  "description": "Size of the Media Composer VM."
+			},
+			"allowedValues": 
+			[
+			  "Standard_NV12",
+			  "Standard_NV12_Promo",
+			  "Standard_NV12s_v2",
+			  "Standard_NV12s_v3"
+			]
+		},
+		"mediaComposer-teradiciKey": {
+			"type": "string",
+			"metadata": {
+			  "description": "Teradici key to activate agent"
+			}
+		},
+		"mediaComposer-instances": {
+			"type": "int",
+			"defaultValue": 1,
+			"metadata": {
+			  "description": "Number of MediaComposer VMs to deploy"
+			}
+		},	
+		"nexis-addressStatic": {
+      "type": "string",
+      "metadata": {
+        "description" : "(optional) The static private IP address for the SD. If not specified, it will use whatever address assigned by Azure and make that static."
+      },
+			"defaultValue":""
+		},		
+    "signiant-registrationKey": {
+      "type": "string",
+      "metadata": {
+        "description": "Signiant Registration Key"
+      }
+    },
+    "system-artifactsLocation": {
+      "type": "string",
+      "defaultValue": "https://sadisneypofdeployment.blob.core.windows.net"
+    },
+    "system-mediaComposerFileName": {
+			"type": "string",
+			"defaultValue": "Media_Composer_2019.6_Win.zip"
+		},
+		"system-teradiciInstallFileName": {
+			"type": "string",
+			"defaultValue": "PCoIP_agent_release_installer_2.11.0.9616_graphics.exe"
+		},
+		"system-nvidiaInstallFileName": {
+			"type": "string",
+			"defaultValue": "412.16_grid_win10_server2016_64bit_international.exe"
+		},
+		"system-nexisClientInstallFileName": {
+			"type": "string",
+			"defaultValue": "AvidNEXISClient_Win64_19.6.0.7.msi"
+    },
+    "system-signiantInstallName": {
+      "type": "string",
+      "metadata": {
+        "description": "Signiant Install File Name"
+      },
+      "defaultValue": "Install_Signiant_Media_Shuttle_v2.9.0.tar.gz"
+    },
+    "system-avidNexisClientInstallName": {
+      "type": "string",
+      "metadata": {
+        "description": "Avid Mexis Client Centos Install File Name"
+      },
+      "defaultValue": "AvidNEXISClient_el7.centos.x86_64_19.6.0_7.bin"
+    }
+  },
+  "variables": {
+    "gihubBase":"https://raw.githubusercontent.com/Azure/VideoEditorialInTheCloud/master",
+    "_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
+    "vnetTemplatelink": "[concat(variables('gihubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
+    "mediaComposerTemplateLink": "[concat(variables('gihubBase'),'/mediacomposer/','mediacomposerazuredeploy.json')]",
+    "nexisTemplateLink": "[concat(variables('gihubBase'),'/nexiscloud/','deploy-nexiscloud.json')]",
+    "signiantTemplateLink": "[concat(variables('gihubBase'),'/signiant/','signiantazuredeploy.json')]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-01-01",
+      "name": "vnet-template",
+      "type": "Microsoft.Resources/deployments",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vnetTemplatelink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualNetworkName": {
+            "value": "[parameters('general-vnetName')]"
+          },
+          "vnetResourceGroup": {
+            "value": "[parameters('general-vnetResourceGroup')]"
+          },
+          "subnetName": {
+            "value": "[parameters('general-subnetName')]"
+          },
+          "addressSpace": {
+            "value": "[parameters('general-addressSpace')]"
+          },
+          "addressSubnet": {
+            "value": "[parameters('general-addressSubnet')]"
+          },
+          "workstationName": {
+            "value": "[parameters('general-namePrefix')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2019-07-01",
+      "name": "mediaComposer-template",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "vnet-template"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('mediaComposerTemplateLink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "workstationName": {
+            "value": "[parameters('general-namePrefix')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('general-adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('general-adminPassword')]"
+          },
+          "vmSize": {
+            "value": "[parameters('mediaComposer-vmSize')]"
+          },
+          "teradiciKey": {
+            "value": "[parameters('mediaComposer-teradiciKey')]"
+          },
+          "numberOfInstances": {
+            "value": "[parameters('mediaComposer-instances')]"
+          },
+          "subnetId": {
+            "value": "[reference('vnet-template').outputs.subnetRef.value]"
+          }, 
+          "_artifactsLocation": {
+            "value": "[parameters('system-artifactsLocation')]"
+          },
+          "_githubLocation":{
+            "value": "[variables('gihubBase')]"
+          }, 
+          "mediaComposerFileName": {
+            "value": "[parameters('system-mediaComposerFileName')]"
+          }, 
+          "teradiciInstallFileName": {
+            "value": "[parameters('system-teradiciInstallFileName')]"
+          }, 
+          "nvidiaInstallFileName": {
+            "value": "[parameters('system-nvidiaInstallFileName')]"
+          }, 
+          "nexisClientInstallFileName": {
+            "value": "[parameters('system-nexisClientInstallFileName')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "nexis-template",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "vnet-template"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('nexisTemplateLink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": {
+            "value": "[parameters('general-namePrefix')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('general-adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('general-adminPassword')]"
+          },
+          "storageAccountType": {
+            "value": "Premium_LRS"
+          },
+          "mediaDiskSize": {
+            "value": 512
+          },
+          "addressStatic": {
+            "value": "[parameters('nexis-addressStatic')]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('system-artifactsLocation')]"
+          },
+          "_buildArtifactsLocation": {
+            "value": "[variables('_buildArtifactsLocation')]"
+          },
+          "_githubLocation":{
+            "value": "[variables('gihubBase')]"
+          }, 
+          "nexisBuild": {
+            "value": "AvidNexisCloud_19.8.0-2.run"
+          },
+          "partNumber":{
+            "value": "0100-40109-00"
+          },
+          "subnetId": {
+            "value": "[reference('vnet-template').outputs.subnetRef.value]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "signiant-template",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "vnet-template"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('signiantTemplateLink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "workstationName": {
+            "value": "[parameters('general-namePrefix')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('general-adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('general-adminPassword')]"
+          },
+          "subnetId": {
+            "value": "[reference('vnet-template').outputs.subnetRef.value]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('system-artifactsLocation')]"
+          },
+          "vmSize":{
+            "value": "Standard_D8_v3"
+          },
+          "signiantKey":{
+            "value": "[parameters('signiant-registrationKey')]"
+          },
+          "signiantInstallName":{
+            "value": "[parameters('system-signiantInstallName')]"
+          },
+          "avidNexisClientInstallName":{
+            "value": "[parameters('system-avidNexisClientInstallName')]"
+          }
+        }
+      }
+    }
+  ],
+	"outputs": {
+		"general-namePrefix": {
+			"type": "string",
+			"value": "[parameters('general-namePrefix')]"
+    },
+    "general-adminUsername": {
+			"type": "string",
+			"value": "[parameters('general-adminUsername')]"
+    },
+    "general-adminPassword": {
+			"type": "string",
+			"value": "[parameters('general-adminPassword')]"
+    },
+    "resourceGroupName": {
+    	"type": "string",
+      "value": "[resourceGroup().name]"
+    },
+    "resourceGroupLocation": {
+      "type": "string",
+      "value": "[resourceGroup().location]"
+    },
+    "vnetTemplatelink": {
+      "type": "string",
+      "value": "[variables('vnetTemplatelink')]"
+    },
+    "vnet-template": {
+    	"type": "string",
+      "value": "[reference('vnet-template').outputs.subnetRef.value]"
+    }
+  }
+}

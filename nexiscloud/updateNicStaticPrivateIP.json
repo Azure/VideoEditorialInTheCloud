@@ -1,0 +1,44 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "nicName": {
+            "type": "string"
+        },
+        "privateIp": {
+            "type": "string"
+        },
+        "subnetId": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('nicName')]",
+            "location": "[resourceGroup().location]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2017-06-01",
+            "properties": {
+                "ipConfigurations":[
+                    {
+                        "name": "ipconfig1",
+                        "properties":{
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[parameters('privateIp')]",
+                            "subnet": {
+                                "id": "[parameters('subnetId')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "privateIPAddress": {
+            "value": "[reference(concat('Microsoft.Network/networkInterfaces/', parameters('nicName'))).ipConfigurations[0].properties.privateIPAddress]",
+            "type": "string"
+        }
+    }
+}

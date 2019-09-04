@@ -1,0 +1,318 @@
+﻿{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"namePrefix": {
+			"type": "string",
+			"minLength": 3,
+			"maxLength": 8,
+			"metadata": {
+				"description": "System Name for NEXIS Cloud Edition. 3-char min, 8-char max, lowercase alphanumeric"
+			}
+		},
+		"adminUsername": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the Administrator of the VMs"
+			}
+		},
+		"adminPassword": {
+			"type": "securestring",
+			"minLength": 12,
+			"metadata": {
+				"description": "Password for the Administrator account of the VMs"
+			}
+		},
+		"storageAccountType": {
+			"type": "string",
+			"allowedValues": [
+				"Standard_LRS",
+				"Premium_LRS"
+			],
+			"metadata": {
+				"description": "Type of new Storage Accounts (Standard_LRS or Premium_LRS) to be created to store VM disks"
+			},
+			"defaultValue": "Premium_LRS"
+		},
+		"mediaDiskSize": {
+			"type": "int",
+			"metadata": {
+				"description": "The size (in GiB) of each Media Disk"
+			},
+			"defaultValue": 512
+		},		
+		"privateAddressType": {
+			"type": "string",
+			"defaultValue":"Static"
+		},
+		"addressStatic": {
+			"type": "string",
+			"defaultValue":""
+		},		
+		"deployPublicIPs": {
+      "type": "string",
+      "defaultValue": "No"
+    },
+    "_githubLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "The base URI where github artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
+      }
+    },
+		"_artifactsLocation": {
+			"type": "string"
+		},
+		"_buildArtifactsLocation": {
+			"type": "string"
+		},
+		"nexisBuild": {
+			"type": "string"
+    },
+    "partNumber": {
+			"type": "string"
+		},
+		"subnetId": {
+			"type": "string"
+		}
+	},
+  "variables": {
+    "apiVersionStorage": "2016-01-01",
+    "sdVmNamePrefix": "[concat(parameters('namePrefix'),'-sd')]",
+    "sdVmSize": "Standard_DS2_v2",
+    "mpDiskSize": "[parameters('mediaDiskSize')]",
+    "sdPublicIPAddressName": "[concat(variables('sdVmNamePrefix'),'-ip')]",
+    "publicIPAddressType": "Dynamic",
+    "sdDnsLabelPrefix": "concat(variables('sdVmNamePrefix'),'-dns')",
+    "vmLoopTemplateURL": "[concat(parameters('_githubLocation'),'/nexiscloud/newVM.json')]",
+    "imagePublisher": "credativ",
+    "imageOffer": "Debian",
+    "imageSKU": "8",
+    "imageVersion": "latest",
+    "mpVmSizeTemplateLink": "[concat(parameters('_githubLocation'),'/nexiscloud/',parameters('storageAccountType'),'mpVmSize.json')]",
+    "sdVmCount":  1
+  },
+	"resources": [
+		{
+			"apiVersion": "2015-01-01",
+			"name": "vmsize-template",
+			"type": "Microsoft.Resources/deployments",
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('mpVmSizeTemplateLink')]",
+					"contentVersion": "1.0.0.0"
+				}
+			}
+		},
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[concat(variables('sdPublicIPAddressName'), padLeft(copyindex(1),2,'0'))]",
+      "condition": "[equals(parameters('deployPublicIPs'), 'Yes')]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "sdipLoop",
+        "count": "[variables('sdVmCount')]"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[concat(variables('sdDnsLabelPrefix'), padLeft(copyindex(1),2,'0'))]"
+        }
+      }
+    },
+    {
+      "name": "[concat(variables('sdVmNamePrefix'), '-nic', padLeft(copyIndex(1),2,'0'))]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[concat('Microsoft.Network/publicIPAddresses/', variables('sdPublicIPAddressName'), padLeft(copyindex(1),2,'0'))]"
+      ],
+      "copy": {
+        "name": "sdnicLoop",
+        "count": "[variables('sdVmCount')]"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[parameters('subnetId')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[concat('update', variables('sdVmNamePrefix'), '-nicStatic', padLeft(copyindex(1),2,'0'))]",
+      "condition": "[equals(parameters('privateAddressType'), 'Static')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "sdnicLoop"
+      ],
+      "copy": {
+        "name": "sdnicStaticLoop",
+        "count": "[variables('sdVmCount')]"
+      },
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "nicName": {
+            "value": "[concat(variables('sdVmNamePrefix'), '-nic', padLeft(copyindex(1),2,'0'))]"
+          },
+          "privateIp": {
+            "value": "[if(empty(parameters('addressStatic')), reference(concat('Microsoft.Network/networkInterfaces/', concat(variables('sdVmNamePrefix'), '-nic', padLeft(copyindex(1),2,'0')))).ipConfigurations[0].properties.privateIPAddress, parameters('addressStatic'))]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_githubLocation'), '/nexiscloud/updateNicStaticPrivateIP.json')]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "name": "[concat('updatePublicIP', variables('sdVmNamePrefix'), '-nic', padLeft(copyindex(1),2,'0'))]",
+      "condition": "[equals(parameters('deployPublicIPs'), 'Yes')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+       "sdnicStaticLoop",
+        "sdnicLoop"
+      ],
+      "copy": {
+        "name": "sdNicUpdateLoop",
+        "count": "[int('1')]"
+      },
+      "properties": {
+        "mode": "Incremental",
+        "parameters": {
+          "nicName": {
+            "value": "[concat(variables('sdVmNamePrefix'), '-nic', padLeft(copyindex(1),2,'0'))]"
+          },
+          "publicIpAddressId": {
+            "value": "[resourceId('Microsoft.Network/publicIpAddresses', variables('sdPublicIPAddressName'), padLeft(copyindex(1),2,'0'))]"
+          },
+          "subnetId": {
+            "value": "[parameters('subnetId')]"
+          },
+          "privateAddressType": {
+            "value": "[parameters('privateAddressType')]"
+          },
+          "privateIPAddress": {
+            "value": "[reference(concat('update', variables('sdVmNamePrefix'), '-nicStatic', padLeft(copyindex(1),2,'0'))).outputs.privateIPAddress.value]"
+          }
+        },
+        "templateLink": {
+          "uri": "[concat(parameters('_githubLocation'),'/nexiscloud/updateNicPublicIP.json')]",
+          "contentVersion": "1.0.0.0"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "copy": {
+        "name": "sdVirtualMachineLoop",
+        "count": "[variables('sdVmCount')]"
+      },
+      "name": "[variables('sdVmNamePrefix')]",
+      "dependsOn": [
+        "sdnicLoop"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vmLoopTemplateURL')]"
+        },
+        "parameters": {
+          "vmName": {
+            "value": "[variables('sdVmNamePrefix')]"
+          },
+          "instanceId": {
+            "value": "[padLeft(copyindex(1),2,'0')]"
+          },
+          "vmAvailabilitySetName": {
+            "value": ""
+          },
+          "storageAccountType": {
+            "value": "[parameters('storageAccountType')]"
+          },
+          "vmSize": {
+            "value": "[variables('sdVmSize')]"
+          },
+          "vmDiskCount": {
+            "value": "[int('1')]"
+          },
+          "vmDiskSize": {
+            "value": "[variables('mpDiskSize')]"
+          },
+          "tagSystemName": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('_githubLocation')]"
+          },
+          "imagePublisher": {
+            "value": "[variables('imagePublisher')]"
+          },
+          "imageOffer": {
+            "value": "[variables('imageOffer')]"
+          },
+          "imageSKU": {
+            "value": "[variables('imageSKU')]"
+          },
+          "imageVersion": {
+            "value": "[variables('imageVersion')]"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('sdVmNamePrefix'),'-vm', padLeft(copyindex(1),2,'0'), '/', 'installNexis')]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "sdCommandLoop",
+        "count": "[variables('sdVmCount')]"
+      },
+      "dependsOn": [
+        "sdVirtualMachineLoop"
+      ],
+      "properties": {
+        "publisher": "Microsoft.Azure.Extensions",
+        "type": "CustomScript",
+        "typeHandlerVersion": "2.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "[concat(parameters('_githubLocation'), '/bin/installNexis.bash')]"
+          ]
+        },
+        "protectedSettings": {
+          "commandToExecute": "[concat('/bin/bash installNexis.bash ', parameters('namePrefix'), ' ', parameters('_buildArtifactsLocation'), ' \"', '', '\" ', parameters('nexisBuild'), ' ', parameters('partNumber'))]"
+        }
+      }
+    }
+	],
+	"outputs": {
+		"systemName": {
+			"type": "string",
+			"value": "[parameters('namePrefix')]"
+		}
+	}
+}
