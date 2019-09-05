@@ -103,7 +103,21 @@
 					"contentVersion": "1.0.0.0"
 				}
 			}
-		},
+    },
+    {
+      "apiVersion": "2019-04-01",
+      "name": "[concat(parameters('namePrefix'),'nexisonline')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "properties": {
+          "supportsHttpsTrafficOnly": true
+      },
+      "dependsOn": [],
+      "sku": {
+          "name": "Premium_LRS"
+      },
+      "kind": "BlockBlobStorage"
+    },
     {
       "apiVersion": "2015-06-15",
       "type": "Microsoft.Network/publicIPAddresses",
