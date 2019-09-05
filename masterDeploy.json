@@ -2,153 +2,152 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   	"contentVersion": "1.0.0.0",
   	"parameters": {
-		"general-adminUsername": {
-			"type": "string",
-			"metadata": {
-				"description": "Name of the Administrator of the VMs"
-			}
-    },
-    	"general-adminPassword": {
-			"type": "securestring",
-			"minLength": 12,
-			"metadata": {
-				"description": "Password for the Administrator account of the VMs"
-			}
-		},
-		"general-namePrefix": {
-			"type": "string",
-			"minLength": 3,
-			"maxLength": 7,
-			"metadata": {
-				"description": "System Name for NEXIS Cloud Edition. 3-char min, 7-char max, lowercase alphanumeric"
-			}
-		},
-    "general-newOrExistingVnet": {
-      "type": "string",
-      "metadata": {
-        "description":" New if you choose to create a new Virtual Network. Existing if you choose to use Virtual Network that has already been created. (To create a Vnet outside of this form, please go to the Azure portal and create a VNET under the resource group)"
+      "general-AdminUsername": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the Administrator of the VMs"
+        }
       },
-			"defaultValue": "new",
-    		"allowedValues": [
-        		"new",
-        		"existing"
-    		]
-    },
-    "general-vnetName": {
-      "type": "string",
-      "metadata": {
-        "description":"Name of the new or existing Virtual Network (depending on choice above). If you chose Existing above, the name of the Vnet you enter here must match an existing Vnet, or deployment will fail"
+        "general-AdminPassword": {
+        "type": "securestring",
+        "minLength": 12,
+        "metadata": {
+          "description": "Password for the Administrator account of the VMs"
+        }
+      },
+      "general-NamePrefix": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 7,
+        "metadata": {
+          "description": "System Name for NEXIS Cloud Edition. 3-char min, 7-char max, lowercase alphanumeric"
+        }
+      },
+      "general-NewOrExistingVnet": {
+        "type": "string",
+        "metadata": {
+          "description":" New if you choose to create a new Virtual Network. Existing if you choose to use Virtual Network that has already been created. (To create a Vnet outside of this form, please go to the Azure portal and create a VNET under the resource group)"
+        },
+        "defaultValue": "new",
+          "allowedValues": [
+              "new",
+              "existing"
+          ]
+      },
+      "general-VnetName": {
+        "type": "string",
+        "metadata": {
+          "description":"Name of the new or existing Virtual Network (depending on choice above). If you chose Existing above, the name of the Vnet you enter here must match an existing Vnet, or deployment will fail"
+        }
+      },
+      "general-VnetResourceGroup": {
+        "type" : "string",
+        "metadata" : {
+          "description" : "Name of the Resource Group where the existing Vnet is deployed. If you chose Existing above, this field must match the name of an existing resource group that contains the Vnet specified in the \"Vnet Name\" field. If you chose New, enter the name of the Resource Group that you're deploying to."
+        }
+      },
+      "general-SubnetName": {
+        "type": "string",
+        "metadata": {
+          "description" : "If you chose New Vnet above, this will be the name of the new subnet in the new Vnet. If you chose Existing Vnet above, this name should match the existing subnet in that Vnet to which the VMs should be deployed, or deployment will fail"
+        },
+        "defaultValue": "default"
+      },
+      "general-AddressSpace": {
+        "type": "string",
+        "metadata": {
+          "description" : "If you chose New Vnet above, this will be the address space for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. If you chose Existing Vnet, you can ignore this field"
+        },
+        "defaultValue": "10.0.0.0/16"
+      },
+      "general-AddressSubnet": {
+        "type": "string",
+        "metadata": {
+          "description" : "If you chose New Vnet above, this will be the address subnet for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. It must be within the Address Space you configured above, or deployment will fail. If you chose Existing Vnet, you can ignore this field"
+        },
+        "defaultValue": "10.0.0.0/24"
+      },
+      "mediaComposer-VmSize": {
+        "type": "string",
+        "defaultValue": "Standard_NV12s_v3",
+        "metadata": {
+          "description": "Size of the Media Composer VM."
+        },
+        "allowedValues": 
+        [
+          "Standard_NV12",
+          "Standard_NV12_Promo",
+          "Standard_NV12s_v2",
+          "Standard_NV12s_v3"
+        ]
+      },
+      "mediaComposer-TeradiciKey": {
+        "type": "string",
+        "metadata": {
+          "description": "Teradici key to activate agent"
+        }
+      },
+      "mediaComposer-Instances": {
+        "type": "int",
+        "defaultValue": 1,
+        "metadata": {
+          "description": "Number of MediaComposer VMs to deploy"
+        }
+      },	
+      "nexis-AddressStatic": {
+        "type": "string",
+        "metadata": {
+          "description" : "(optional) The static private IP address for the SD. If not specified, it will use whatever address assigned by Azure and make that static."
+        },
+        "defaultValue":""
+      },		
+      "signiant-RegistrationKey": {
+        "type": "string",
+        "metadata": {
+          "description": "Signiant Registration Key"
+        }
+      },
+      "system-InstallURL": {
+        "type": "string"
+      },
+      "system-MediaComposerClient": {
+        "type": "string",
+        "defaultValue": "Media_Composer_2019.6_Win.zip"
+      },
+      "system-TeradiciAgent": {
+        "type": "string",
+        "defaultValue": "PCoIP_agent_release_installer_2.11.0.9616_graphics.exe"
+      },
+      "system-NvidiaDriver": {
+        "type": "string",
+        "defaultValue": "412.16_grid_win10_server2016_64bit_international.exe"
+      },
+      "system-NexisWindowsClient": {
+        "type": "string",
+        "defaultValue": "AvidNEXISClient_Win64_19.6.0.7.msi"
+      },
+      "system-SigniantClient": {
+        "type": "string",
+        "metadata": {
+          "description": "Signiant Install File Name"
+        },
+        "defaultValue": "Install_Signiant_Media_Shuttle_v2.9.0.tar.gz"
+      },
+      "system-NexisCentosClient": {
+        "type": "string",
+        "metadata": {
+          "description": "Avid Mexis Client Centos Install File Name"
+        },
+        "defaultValue": "AvidNEXISClient_el7.centos.x86_64_19.6.0_7.bin"
       }
-		},
-		"general-vnetResourceGroup": {
-      "type" : "string",
-      "metadata" : {
-        "description" : "Name of the Resource Group where the existing Vnet is deployed. If you chose Existing above, this field must match the name of an existing resource group that contains the Vnet specified in the \"Vnet Name\" field. If you chose New, enter the name of the Resource Group that you're deploying to."
-      }
-		},
-		"general-subnetName": {
-      "type": "string",
-      "metadata": {
-        "description" : "If you chose New Vnet above, this will be the name of the new subnet in the new Vnet. If you chose Existing Vnet above, this name should match the existing subnet in that Vnet to which the VMs should be deployed, or deployment will fail"
-      },
-			"defaultValue": "default"
-		},
-		"general-addressSpace": {
-      "type": "string",
-      "metadata": {
-        "description" : "If you chose New Vnet above, this will be the address space for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. If you chose Existing Vnet, you can ignore this field"
-      },
-			"defaultValue": "10.0.0.0/16"
-		},
-		"general-addressSubnet": {
-      "type": "string",
-      "metadata": {
-        "description" : "If you chose New Vnet above, this will be the address subnet for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. It must be within the Address Space you configured above, or deployment will fail. If you chose Existing Vnet, you can ignore this field"
-      },
-			"defaultValue": "10.0.0.0/24"
     },
-		"mediaComposer-vmSize": {
-			"type": "string",
-			"defaultValue": "Standard_NV12s_v3",
-			"metadata": {
-			  "description": "Size of the Media Composer VM."
-			},
-			"allowedValues": 
-			[
-			  "Standard_NV12",
-			  "Standard_NV12_Promo",
-			  "Standard_NV12s_v2",
-			  "Standard_NV12s_v3"
-			]
-		},
-		"mediaComposer-teradiciKey": {
-			"type": "string",
-			"metadata": {
-			  "description": "Teradici key to activate agent"
-			}
-		},
-		"mediaComposer-instances": {
-			"type": "int",
-			"defaultValue": 1,
-			"metadata": {
-			  "description": "Number of MediaComposer VMs to deploy"
-			}
-		},	
-		"nexis-addressStatic": {
-      "type": "string",
-      "metadata": {
-        "description" : "(optional) The static private IP address for the SD. If not specified, it will use whatever address assigned by Azure and make that static."
-      },
-			"defaultValue":""
-		},		
-    "signiant-registrationKey": {
-      "type": "string",
-      "metadata": {
-        "description": "Signiant Registration Key"
-      }
-    },
-    "system-artifactsLocation": {
-      "type": "string",
-      "defaultValue": "https://sadisneypofdeployment.blob.core.windows.net"
-    },
-    "system-mediaComposerFileName": {
-			"type": "string",
-			"defaultValue": "Media_Composer_2019.6_Win.zip"
-		},
-		"system-teradiciInstallFileName": {
-			"type": "string",
-			"defaultValue": "PCoIP_agent_release_installer_2.11.0.9616_graphics.exe"
-		},
-		"system-nvidiaInstallFileName": {
-			"type": "string",
-			"defaultValue": "412.16_grid_win10_server2016_64bit_international.exe"
-		},
-		"system-nexisClientInstallFileName": {
-			"type": "string",
-			"defaultValue": "AvidNEXISClient_Win64_19.6.0.7.msi"
-    },
-    "system-signiantInstallName": {
-      "type": "string",
-      "metadata": {
-        "description": "Signiant Install File Name"
-      },
-      "defaultValue": "Install_Signiant_Media_Shuttle_v2.9.0.tar.gz"
-    },
-    "system-avidNexisClientInstallName": {
-      "type": "string",
-      "metadata": {
-        "description": "Avid Mexis Client Centos Install File Name"
-      },
-      "defaultValue": "AvidNEXISClient_el7.centos.x86_64_19.6.0_7.bin"
-    }
-  },
   "variables": {
-    "gihubBase":"https://raw.githubusercontent.com/Azure/VideoEditorialInTheCloud/master",
+    "githubBase":"https://raw.githubusercontent.com/Azure/VideoEditorialInTheCloud/master",
     "_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
-    "vnetTemplatelink": "[concat(variables('gihubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
-    "mediaComposerTemplateLink": "[concat(variables('gihubBase'),'/mediacomposer/','mediacomposerazuredeploy.json')]",
-    "nexisTemplateLink": "[concat(variables('gihubBase'),'/nexiscloud/','deploy-nexiscloud.json')]",
-    "signiantTemplateLink": "[concat(variables('gihubBase'),'/signiant/','signiantazuredeploy.json')]"
+    "vnetTemplatelink": "[concat(variables('githubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
+    "mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediacomposer/','mediacomposerazuredeploy.json')]",
+    "nexisTemplateLink": "[concat(variables('githubBase'),'/nexiscloud/','deploy-nexiscloud.json')]",
+    "signiantTemplateLink": "[concat(variables('githubBase'),'/signiant/','signiantazuredeploy.json')]"
   },
   "resources": [
     {
@@ -219,22 +218,22 @@
             "value": "[reference('vnet-template').outputs.subnetRef.value]"
           }, 
           "_artifactsLocation": {
-            "value": "[parameters('system-artifactsLocation')]"
+            "value": "[parameters('system-InstallURL')]"
           },
           "_githubLocation":{
-            "value": "[variables('gihubBase')]"
+            "value": "[variables('githubBase')]"
           }, 
           "mediaComposerFileName": {
-            "value": "[parameters('system-mediaComposerFileName')]"
+            "value": "[parameters('system-MediaComposerClient')]"
           }, 
           "teradiciInstallFileName": {
-            "value": "[parameters('system-teradiciInstallFileName')]"
+            "value": "[parameters('system-TeradiciAgent')]"
           }, 
           "nvidiaInstallFileName": {
-            "value": "[parameters('system-nvidiaInstallFileName')]"
+            "value": "[parameters('system-NvidiaDriver')]"
           }, 
           "nexisClientInstallFileName": {
-            "value": "[parameters('system-nexisClientInstallFileName')]"
+            "value": "[parameters('system-NexisWindowsClient')]"
           }
         }
       }
@@ -272,13 +271,13 @@
             "value": "[parameters('nexis-addressStatic')]"
           },
           "_artifactsLocation": {
-            "value": "[parameters('system-artifactsLocation')]"
+            "value": "[parameters('system-InstallURL')]"
           },
           "_buildArtifactsLocation": {
             "value": "[variables('_buildArtifactsLocation')]"
           },
           "_githubLocation":{
-            "value": "[variables('gihubBase')]"
+            "value": "[variables('githubBase')]"
           }, 
           "nexisBuild": {
             "value": "AvidNexisCloud_19.8.0-2.run"
@@ -319,7 +318,7 @@
             "value": "[reference('vnet-template').outputs.subnetRef.value]"
           },
           "_artifactsLocation": {
-            "value": "[parameters('system-artifactsLocation')]"
+            "value": "[parameters('system-InstallURL')]"
           },
           "vmSize":{
             "value": "Standard_D8_v3"
@@ -328,10 +327,10 @@
             "value": "[parameters('signiant-registrationKey')]"
           },
           "signiantInstallName":{
-            "value": "[parameters('system-signiantInstallName')]"
+            "value": "[parameters('system-SigniantClient')]"
           },
           "avidNexisClientInstallName":{
-            "value": "[parameters('system-avidNexisClientInstallName')]"
+            "value": "[parameters('system-NexisCentosClient')]"
           }
         }
       }

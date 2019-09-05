@@ -18,7 +18,7 @@ TODO: Describe and show how to build your code and run the tests.
 ## Fields
 
 | Name | Description |
-|-----------|:-----------:|
+|---------------------------------|:-----------------------------------------------------:|
 | Resource Group | You can create a new one or use an existing group |
 | General Admin Username | You can create a new one or use an existing group |
 | General Admin Password | Password for the Administrator account of the NEXIS system |
@@ -32,18 +32,17 @@ TODO: Describe and show how to build your code and run the tests.
 | Media Composer Vm Size | Size of Media Composer Client VM. (Standard_NV12) |
 | Media Composer Teradici Key | Teradici key to activate agent |
 | Media Composer Instances | Number of MediaComposer VMs to deploy |
-| Nexis Media Pack Count | Number of Mediapack VMs to be created in cluster (Min=1, Max=31) |
-| Nexis Storage Account Type | Type of new Storage Accounts (Standard_LRS or Premium_LRS) to be created to store VM disks |
 | Nexis Media Disk Size | The size (in GB) of each Media Disk |
-| Nexis Private Address Type | (optional) Static |
-| Nexis Static Private IP Address | (optional) The static private IP address for the SD. If not specified, it will use whatever address assigned by Azure and make that static. |
-| Nexis Deploy Public IPs | Select whether or not you want to deploy resources with Public IP addresses |
-| Signiant Vm Size | Size of Signiant Client VM. (Standard_D8_v3) |
+| Nexis Address Static | (optional) The static private IP address for the SD. If not specified, it will use whatever address assigned by Azure and make that static. |
 | Signiant Registration Key | Signiant Registration Key |
-| System Artifacts Location | (optional) Location of the deployment templates |
-| System Install Location | (optional) URL to the Avid installation scripts |
-| System Nexis Build | (optional) Use default or specify custom Nexis build number |
+| System Install URL | (optional) Location of the deployment install files |
+| System Media Composer | Avid Media Composer desktop installer |
+| System Teradici Agent | Teradici PCoIP Agent (ver. 2.11 required) Installer |
+| System Nvidia Driver | Nvidia Graphic Driver Installer |
+| System Nexis Windows Client | Avid Nexis Client for Windows Installer |
+| System Signiant Client | Signiant MEdia Shuttle Installer |
+| System Nexis Centos Client | Avid Nexis Client for Centos Installer |
 
 ## Deploy to Azure
 
-Deploy <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FVideoEditorialInTheCloud%2Fmaster%2FmasterDeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FVideoEditorialInTheCloud%2Fmaster%2FmasterDeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
