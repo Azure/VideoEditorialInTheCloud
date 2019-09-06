@@ -84,7 +84,7 @@
     "scriptFileName": "installSigniant.sh",
     "signiantInstallName":"[parameters('signiantInstallName')]",
     "avidNexisClientInstallName":"[parameters('avidNexisClientInstallName')]",
-    "signiantKey":"[parameters('signiantKey')]",
+    "signiantKey":"[trim(parameters('signiantKey'))]",
     "scriptLocation": "[concat(parameters('_githubLocation'), '/','scripts')]",
     "signiantInstallLocation": "[concat(parameters('_artifactsLocation'), '/','installers','/',variables('signiantInstallName'))]",
     "avidNexisClentInstallLocation": "[concat(parameters('_artifactsLocation'), '/','installers','/',variables('avidNexisClientInstallName'))]",

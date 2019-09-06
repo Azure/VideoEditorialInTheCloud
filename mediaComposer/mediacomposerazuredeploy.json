@@ -4,75 +4,34 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "The Azure location where the resources are deployed.  If blank, variables('location') is used."
-      }
+      "defaultValue": "[resourceGroup().location]"
     },
     "workstationName": {
-      "type": "string",
-      "metadata": {
-        "description": "Workstation name must be 3-char min, 8-char max, lowercase alphanumeric"
-      }
+      "type": "string"
     },
     "adminUsername": {
-      "type": "string",
-      "defaultValue": "aviduser",
-      "minLength": 4,
-      "metadata": {
-        "description": "Name of the Admin user for workstation"
-      }
+      "type": "string"
     },
     "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Passwords must be between 12 and 72 characters and have 3 of the following: 1 lower case, 1 upper case, 1 number, and 1 special character"
-      }
+      "type": "securestring"
     },
     "teradiciKey": {
-      "type": "string",
-      "defaultValue": "BD8RGL3WLN0Z@2E14-1017-AE71-80FA",
-      "metadata": {
-        "description": "Teradici key to activate agent"
-      }
+      "type": "string"
     },
     "vmSize": {
-      "type": "string",
-      "defaultValue": "Standard_NV12_Promo",
-      "metadata": {
-        "description": "Size of the VM."
-      },
-      "allowedValues": 
-      [
-        "Standard_NV12",
-        "Standard_NV12_Promo",
-        "Standard_NV12s_v2",
-        "Standard_NV12s_v3"
-      ]
+      "type": "string"
     },
     "numberOfInstances": {
-      "type": "int",
-      "metadata": {
-        "description": "Number of VMs to deploy"
-      }
+      "type": "int"
     },
     "subnetId": {
-      "type": "string",
-      "metadata": {
-        "description": "The fully qualified reference to the subnet of the Avere vFXT cluster.  Example /subscriptions/SUBSCRIPTION/resourceGroups/RESOURCEGROUP/providers/Microsoft.Network/virtualNetworks/NETWORK_NAME/subnets/SUBNET_NAME."
-      }
+      "type": "string"
     },
     "_artifactsLocation": {
-      "type": "string",
-      "metadata": {
-        "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
-      }
+      "type": "string"
     },
     "_githubLocation": {
-      "type": "string",
-      "metadata": {
-        "description": "The base URI where github artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
-      }
+      "type": "string"
     },
     "mediaComposerFileName": {
       "type": "string"
@@ -103,9 +62,8 @@
     "nicName": "[concat(variables('uniqueName'), '-nic')]",
     "numberOfInstances": "[parameters('numberOfInstances')]",
     "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
-    "singleQuote": "'",
     "subnetId": "[parameters('subnetId')]",
-    "teradiciKey": "[parameters('teradiciKey')]",
+    "teradiciKey": "[trim(parameters('teradiciKey'))]",
     "vmName": "[concat(variables('uniqueName'), '-vm')]",
     "vmSize": "[parameters('vmSize')]",
     "scriptFolder": ".",

@@ -89,7 +89,8 @@
     "imageSKU": "8",
     "imageVersion": "latest",
     "mpVmSizeTemplateLink": "[concat(parameters('_githubLocation'),'/nexiscloud/',parameters('storageAccountType'),'mpVmSize.json')]",
-    "sdVmCount":  1
+    "sdVmCount":  1,
+    "addressStatic":"[trim(parameters('addressStatic'))]"
   },
 	"resources": [
 		{
@@ -180,7 +181,7 @@
             "value": "[concat(variables('sdVmNamePrefix'), '-nic', padLeft(copyindex(1),2,'0'))]"
           },
           "privateIp": {
-            "value": "[if(empty(parameters('addressStatic')), reference(concat('Microsoft.Network/networkInterfaces/', concat(variables('sdVmNamePrefix'), '-nic', padLeft(copyindex(1),2,'0')))).ipConfigurations[0].properties.privateIPAddress, parameters('addressStatic'))]"
+            "value": "[if(empty(variables('addressStatic')), reference(concat('Microsoft.Network/networkInterfaces/', concat(variables('sdVmNamePrefix'), '-nic', padLeft(copyindex(1),2,'0')))).ipConfigurations[0].properties.privateIPAddress, variables('addressStatic'))]"
           },
           "subnetId": {
             "value": "[parameters('subnetId')]"
