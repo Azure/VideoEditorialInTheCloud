@@ -1,3 +1,6 @@
+## Deploy to Azure
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FVideoEditorialInTheCloud%2Fmaster%2FmasterDeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
 # Introduction
 
 These templates stand up Video Editorial in the Cloud on Microsoft Azure.  It is intended to give an insight to the look and feel of a Cloud Video Editorial system running in Azure cloud.  
@@ -28,6 +31,4 @@ These templates stand up Video Editorial in the Cloud on Microsoft Azure.  It is
 | System-Signiant Client |The filename of the Signiant Media Shuttle TAR.GZ available in the installers blob container. The default may differ from what you provide, so you will need to update accordingly|
 | System-Avid Nexis Centos Client |The filename of the Avid NEXIS CentOS Client BIN available in the installers blob container. The default may differ from what you provide, so you will need to update accordingly|
 
-## Deploy to Azure
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2FVideoEditorialInTheCloud%2Fmaster%2FmasterDeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
