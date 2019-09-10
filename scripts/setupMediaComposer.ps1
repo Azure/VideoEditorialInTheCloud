@@ -159,7 +159,7 @@ Install-Teradici {
     DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath   
     
     Write-Log "Install Teradici"
-    Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/nopostreboot" -Verb RunAs -Wait
+    Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait
     
     cd "C:\Program Files (x86)\Teradici\PCoIP Agent"
 
