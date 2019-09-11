@@ -89,7 +89,7 @@ Install-ChocolatyAndPackages {
     choco install -y vcredist2017
 
     Write-Log "choco Install Google Chrome"
-    choco install -y googlechrome 
+    choco install -y googlechrome -ignore-checksum
 
     Write-Log "Enable the Audio service for Windows Server"
     Set-Service Audiosrv -StartupType Automatic
@@ -153,23 +153,24 @@ Install-Teradici {
     Set-Location -Path "C:\AzureData"
         
     Write-Log "Downloading Teradici"
-    $TeradiciDestinationPath = "D:\AzureData\PCoIP_agent_release_installer_graphic.exe"
+    $TeradiciDestinationPath = "C:\Users\Public\Desktop\PCoIP_agent_release_installer_graphic.exe"
+
 
     Write-Log $DestinationPath
     DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath   
     
-    Write-Log "Install Teradici"
-    Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait
+    #Write-Log "Install Teradici"
+    #Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait
     
-    cd "C:\Program Files (x86)\Teradici\PCoIP Agent"
+    #cd "C:\Program Files (x86)\Teradici\PCoIP Agent"
 
-    Write-Log "Register Teradici"   
-    & .\pcoip-register-host.ps1 -RegistrationCode $TeradiciKey
+    #Write-Log "Register Teradici"   
+    #& .\pcoip-register-host.ps1 -RegistrationCode $TeradiciKey
 
-    & .\pcoip-validate-license.ps1
+    #& .\pcoip-validate-license.ps1
 
-    Write-Log "Restart Teradici Service" 
-    restart-service -name PCoIPAgent
+    #Write-Log "Restart Teradici Service" 
+    #restart-service -name PCoIPAgent
 }
 
 function 
