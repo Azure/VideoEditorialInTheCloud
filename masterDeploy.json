@@ -139,7 +139,7 @@
     "githubBase":"https://raw.githubusercontent.com/Azure/VideoEditorialInTheCloud/master",
     "_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
     "vnetTemplatelink": "[concat(variables('githubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
-    "mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediacomposer/','mediacomposerazuredeploy.json')]",
+    "mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]",
     "nexisTemplateLink": "[concat(variables('githubBase'),'/nexiscloud/','deploy-nexiscloud.json')]",
     "signiantTemplateLink": "[concat(variables('githubBase'),'/signiant/','signiantazuredeploy.json')]"
   },
@@ -314,6 +314,9 @@
           "_artifactsLocation": {
             "value": "[parameters('system-InstallURL')]"
           },
+          "_githubLocation":{
+            "value": "[variables('githubBase')]"
+          }, 
           "vmSize":{
             "value": "Standard_D8_v3"
           },
