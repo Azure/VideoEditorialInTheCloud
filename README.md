@@ -21,3 +21,7 @@ Upload video content to Nexis on Azure
 Edit video content using Media Composer on Azure
 
 Back up your video content to Nexis on Azure
+
+What is Deployed as part of this Solution
+
+<img src="https://raw.githubusercontent.com/Azure/VideoEditorialInTheCloud/master/diagram.png" />
