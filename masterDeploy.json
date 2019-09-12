@@ -81,12 +81,6 @@
           "Standard_NV12s_v3"
         ]
       },
-      "mediaComposer-TeradiciKey": {
-        "type": "string",
-        "metadata": {
-          "description": "Teradici key to activate agent"
-        }
-      },
       "mediaComposer-Instances": {
         "type": "int",
         "defaultValue": 1,
@@ -209,7 +203,7 @@
             "value": "[parameters('mediaComposer-vmSize')]"
           },
           "teradiciKey": {
-            "value": "[parameters('mediaComposer-teradiciKey')]"
+            "value": "null"
           },
           "numberOfInstances": {
             "value": "[parameters('mediaComposer-instances')]"
@@ -256,7 +250,7 @@
             "value": "[parameters('general-namePrefix')]"
           },
           "adminUsername": {
-            "value": "[parameters('general-adminUsername')]"
+            "value": "avid"
           },
           "adminPassword": {
             "value": "[parameters('general-adminPassword')]"
