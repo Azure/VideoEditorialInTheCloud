@@ -4,7 +4,7 @@
 
 # Abstract
 
-This readme file explains the value of video editorial in the cloud using Avid Media Composer and Avid Nexis on Microsoft Azure. The deployment guide included in this repository explains, step-by-step how to deploy these applications into your Azure subscription.  The deployment guide and accompanying scripts are designed for media production companies that want to provide an edit-on-demand deployment experience.
+This readme file explains the value of video editorial in the cloud using Avid Media Composer and Avid Nexis on Microsoft Azure and summarizes key resources in this repository: a deployment guide and deployment scripts. The deployment guide included in this repository explains, step-by-step, how to deploy these applications into your Azure subscription.  The deployment guide and accompanying scripts are designed for media production companies that want to provide an edit-on-demand deployment experience.
 
 # Summary
 
