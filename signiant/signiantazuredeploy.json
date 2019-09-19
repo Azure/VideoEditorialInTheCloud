@@ -81,13 +81,14 @@
     "networkSecurityGroupName": "[concat(variables('uniqueName'),'-sig-nsg')]",
     "adminUsername": "[parameters('adminUsername')]",
     "adminPassword": "[parameters('adminPassword')]",
-    "scriptFileName": "installSigniant.sh",
+    "scriptFileName": "installSigniant.ps1",
     "signiantInstallName":"[parameters('signiantInstallName')]",
     "avidNexisClientInstallName":"[parameters('avidNexisClientInstallName')]",
-    "signiantKey":"[trim(parameters('signiantKey'))]",
     "scriptLocation": "[concat(parameters('_githubLocation'), '/','scripts')]",
     "signiantInstallLocation": "[concat(parameters('_artifactsLocation'), '/','installers','/',variables('signiantInstallName'))]",
     "avidNexisClentInstallLocation": "[concat(parameters('_artifactsLocation'), '/','installers','/',variables('avidNexisClientInstallName'))]",
+    "scriptParameters": "[concat('-SigniantMediaShuttleURL ', variables('signiantInstallLocation'),' -AvidNEXISClientURL ', variables('avidNexisClentInstallLocation'))]",
+    "scriptFolder": ".",
     "networkSecurityGroupRules": [
       {
         "name": "RemoteAccessRDP",
@@ -334,9 +335,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "OpenLogic",
-            "offer": "CentOS",
-            "sku": "7.5",
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2016-Datacenter",
             "version": "latest"
           },
           "osDisk": {
@@ -354,26 +355,23 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
       "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/create.avid.mediacomposer.v0.3.0')]",
+      "apiVersion": "2017-12-01",
       "location": "[variables('location')]",
-      "name": "[concat(concat(variables('vmName'),'/create.Signiant.v1.0.0'))]",
       "dependsOn": [
         "[variables('vmName')]"
       ],
       "properties": {
-        "publisher": "Microsoft.Azure.Extensions",
-        "type": "CustomScript",
-        "typeHandlerVersion": "2.0",
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.9",
         "autoUpgradeMinorVersion": true,
         "settings": {
-
-        },
-        "protectedSettings": {
           "fileUris": [
             "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
           ],
-          "commandToExecute": "[concat('sh ',variables('scriptFileName'),' ',variables('signiantInstallLocation'),' ',variables('signiantKey'),' ',variables('avidNexisClentInstallLocation'))]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
         }
       }
     }

@@ -95,12 +95,6 @@
         },
         "defaultValue":""
       },		
-      "signiant-RegistrationKey": {
-        "type": "string",
-        "metadata": {
-          "description": "Signiant Registration Key"
-        }
-      },
       "system-InstallURL": {
         "type": "string"
       },
@@ -125,14 +119,7 @@
         "metadata": {
           "description": "Signiant Install File Name"
         },
-        "defaultValue": "Install_Signiant_Media_Shuttle_v2.9.0.tar.gz"
-      },
-      "system-NexisCentosClient": {
-        "type": "string",
-        "metadata": {
-          "description": "Avid Mexis Client Centos Install File Name"
-        },
-        "defaultValue": "AvidNEXISClient_el7.centos.x86_64_19.6.0_7.bin"
+        "defaultValue": "Install_Signiant_Media_Shuttle_v2.9.0.exe"
       }
     },
   "variables": {
@@ -320,14 +307,11 @@
           "vmSize":{
             "value": "Standard_D8_v3"
           },
-          "signiantKey":{
-            "value": "[parameters('signiant-registrationKey')]"
-          },
           "signiantInstallName":{
             "value": "[parameters('system-SigniantClient')]"
           },
           "avidNexisClientInstallName":{
-            "value": "[parameters('system-NexisCentosClient')]"
+            "value": "[parameters('system-NexisWindowsClient')]"
           }
         }
       }

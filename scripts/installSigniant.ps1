@@ -1,6 +1,9 @@
 <# Custom Script for Windows to install a file from Azure Storage using the staging folder created by the deployment script #>
 param (
-
+    [ValidateNotNullOrEmpty()]
+    $SigniantMediaShuttleURL,
+    [ValidateNotNullOrEmpty()]
+    $AvidNEXISClientURL
 )
 
 filter Timestamp {"$(Get-Date -Format o): $_"}
@@ -45,27 +48,22 @@ function
 Install-SigniantMediaShuttle {
    
     Write-Log "downloading Signiant Media Shuttle"
-    $SigniantDestinationPath = "D:\AzureData\Install_Signiant_Media_Shuttle_v2.9.0.exe"
+    $SigniantDestinationPath = "C:\Users\Public\Desktop\Install_Signiant_Media_Shuttle.exe"
+
     Write-Log $SigniantDestinationPath
     DownloadFileOverHttp $SigniantMediaShuttleURL $SigniantDestinationPath
 
-    Start-Process -FilePath $SigniantDestinationPath -ArgumentList "/quiet", "/passive", "/norestart" -Wait
-    
 }
 
 try {
     $dest = "D:\AzureData"
     New-Item -Path $dest -ItemType directory -Force
     
-    $AvidNEXISClientURL = "https://sadisneypofdeployment.blob.core.windows.net/installers/AvidNEXISClient_Win64_19.6.0.7.msi"
-
-    $SigniantMediaShuttleURL = "https://sadisneypofdeployment.blob.core.windows.net/installers/Install_Signiant_Media_Shuttle_v2.9.0.exe"
-    
     Write-Log "Call Install-NexisCLient"
     Install-NexisClient
 
     Write-Log "Call Install-SigniantMediaShuttle"
-    #Install-SigniantMediaShuttle
+    Install-SigniantMediaShuttle
 }
 catch {
     Write-Error $_
