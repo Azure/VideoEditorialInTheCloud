@@ -45,12 +45,6 @@
       "description": "Size of the VM."
       }
     },
-    "signiantKey": {
-      "type": "string",
-      "metadata": {
-        "description": "Signiant Registration Key"
-      }
-    },
     "_githubLocation": {
       "type": "string",
       "metadata": {
