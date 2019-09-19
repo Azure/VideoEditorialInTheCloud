@@ -350,7 +350,7 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/create.avid.mediacomposer.v0.3.0')]",
+      "name": "[concat(concat(variables('vmName'),'/create.Signiant.v1.0.0'))]",
       "apiVersion": "2017-12-01",
       "location": "[variables('location')]",
       "dependsOn": [
