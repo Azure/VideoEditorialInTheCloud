@@ -320,9 +320,8 @@
           "computerName": "[variables('vmName')]",
           "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[variables('adminPassword')]",
-          "linuxConfiguration": {
-            "disablePasswordAuthentication": false,
-            "provisionVMAgent": true
+          "windowsConfiguration": {
+            "provisionVmAgent": "true"
           },
           "secrets": [],
           "allowExtensionOperations": true
