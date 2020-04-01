@@ -71,7 +71,7 @@ resource "random_string" "mediacomposer" {
 #########################
 variable "software_install_urls" {
   default ={
-    "mediacomposer_vm_script_url"   = "https://raw.githubusercontent.com/jamesptruitt/EditorialInTheCloudBYOL/master/scripts/setupMediaComposer.ps1"
+    "mediacomposer_vm_script_url"   = "https://raw.githubusercontent.com/Azure/VideoEditorialInTheCloud/master/EITC-BYOL/scripts/setupMediaComposer.ps1"
     "avid_nexis_client_url"         = "https://editorialbyol.blob.core.windows.net/installers/AvidNEXISClient_Win64_19.12.1.9.msi"
     "mediaComposer_url"             = "https://editorialbyol.blob.core.windows.net/installers/Media_Composer_2019.12_Win.zip"
     "teradici_url"                  = "https://editorialbyol.blob.core.windows.net/installers/PCoIP_agent_release_installer_2.11.0.9616_graphics.exe"
