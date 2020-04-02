@@ -1,4 +1,3 @@
-Can you take a look and push it out.
 # Avid Video Editorial In Azure Cloud
  
 This repository covers projects related to installing Avid Editorial software in Azure subscription. 
