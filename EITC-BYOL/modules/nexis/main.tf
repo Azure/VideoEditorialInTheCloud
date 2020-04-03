@@ -37,7 +37,7 @@ module "nexis_storage_servers" {
   boot_diagnostics                = "false"
   delete_os_disk_on_termination   = "true"
   data_disk                       = "true"
-  data_disk_size_gb               = "128"
+  data_disk_size_gb               = "769"
   data_sa_type                    = "Premium_LRS"
   hide_suffix                     = "true"
   tags                            = var.tags
