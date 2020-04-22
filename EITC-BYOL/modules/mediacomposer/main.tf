@@ -1,10 +1,10 @@
 locals {
-    mediacomposer_vm_script_url = "${var.software_install_urls["mediacomposer_vm_script_url"]}"
-    avid_nexis_client_url       = "${var.software_install_urls["avid_nexis_client_url"]}"
-    mediaComposer_url           = "${var.software_install_urls["mediaComposer_url"]}"
-    teradici_url                = "${var.software_install_urls["teradici_url"]}"
-    nvidia_url                  = "${var.software_install_urls["nvidia_url"]}"
-    teradici_key                = "${var.software_install_urls["teradici_key"]}"
+  mediacomposer_vm_script_url = "${var.software_install_urls["mediacomposer_vm_script_url"]}"
+  avid_nexis_client_url       = "${var.software_install_urls["avid_nexis_client_url"]}"
+  mediaComposer_url           = "${var.software_install_urls["mediaComposer_url"]}"
+  teradici_url                = "${var.software_install_urls["teradici_url"]}"
+  nvidia_url                  = "${var.software_install_urls["nvidia_url"]}"
+  teradici_key                = "${var.software_install_urls["teradici_key"]}"
 }
 
 ###################################
@@ -18,6 +18,7 @@ module "media_composer" {
   admin_password                  = var.admin_password
   admin_username                  = var.admin_username
   base_index                      = var.base_index
+  proximity_placement_group_id    = var.proximity_placement_group_id 
   vm_os_simple                    = "WindowsServer"
   storage_account_type            = "Standard_LRS"
   nb_public_ip                    = var.mediacomposer_vm_number_public_ip
@@ -35,9 +36,7 @@ module "media_composer" {
 resource "azurerm_virtual_machine_extension" "media_composer" {
   name                  = format("${var.hostname}-%02.0f",count.index + var.base_index)
   count                 = var.mediacomposer_vm_instances
-  virtual_machine_name  = format("${var.hostname}-%02.0f",count.index + var.base_index)
-  resource_group_name   = var.resource_group_name
-  location              = var.resource_group_location
+  virtual_machine_id    = module.media_composer.vm_ids[count.index]
   publisher             = "Microsoft.Compute"
   type                  = "CustomScriptExtension"
   type_handler_version  = "1.9"

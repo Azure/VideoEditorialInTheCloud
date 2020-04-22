@@ -9,7 +9,8 @@ provider "azurerm" {
   #client_id       = var.client_id
   #client_secret   = var.client_secret
   #tenant_id       = var.tenant_id
-  version         = "~>1.44.0"
+  features {}
+  version         = "~>2.6"
   partner_id      = "6ae4d712-3974-76c4-96de-50fc79fa69fc"
 }
 
@@ -43,11 +44,10 @@ locals {
   jump_box_vm_instances             = 1
   jump_box_vm_number_public_ip      = 1
  
-  
   mediacomposer_vm_size             = "Standard_NV12"
   mediacomposer_base_index          = 0
-  mediacomposer_vm_instances        = 1
-  mediacomposer_vm_number_public_ip = 1
+  mediacomposer_vm_instances        = 2
+  mediacomposer_vm_number_public_ip = 2
 
   nexis_vm_size                     = "Standard_DS4_V2"
   nexis_base_index                  = 0
@@ -82,12 +82,13 @@ locals {
   stored_resource_group_name      = module.editorial_networking.azurerm_resource_group_name
   stored_resource_group_location  = module.editorial_networking.azurerm_resource_group_location
   stored_subnet_id                = module.editorial_networking.azurerm_subnet_ids[0]
+  proximity_placement_group_id    = module.editorial_networking.proximity_placement_group_id
 }
 
 resource "random_string" "general" {
-    length  = 5
-    special = false
-    upper   = false
+  length  = 5
+  special = false
+  upper   = false
 }
 
 module "jump_box_deployment" {
@@ -99,7 +100,8 @@ module "jump_box_deployment" {
   resource_group_location       = local.stored_resource_group_location
   subnet_id                     = local.stored_subnet_id
   source_address_prefix         = local.source_address_prefix
-  base_index                    = local.jump_box_base_index 
+  base_index                    = local.jump_box_base_index
+  proximity_placement_group_id  = local.proximity_placement_group_id  
   jump_box_vm_size              = local.jump_box_vm_size
   jump_box_vm_instances         = local.jump_box_vm_instances
   jump_box_vm_number_public_ip  = local.jump_box_vm_number_public_ip
@@ -115,7 +117,8 @@ module "media_composer_deployment" {
   resource_group_location           = local.stored_resource_group_location
   subnet_id                         = local.stored_subnet_id
   source_address_prefix             = local.source_address_prefix
-  base_index                        = local.mediacomposer_base_index 
+  base_index                        = local.mediacomposer_base_index
+  proximity_placement_group_id      = ""  
   mediacomposer_vm_size             = local.mediacomposer_vm_size
   mediacomposer_vm_instances        = local.mediacomposer_vm_instances
   mediacomposer_vm_number_public_ip = local.mediacomposer_vm_number_public_ip
@@ -131,6 +134,7 @@ module "nexis_deployment" {
   subnet_id                         = local.stored_subnet_id
   source_address_prefix             = local.source_address_prefix
   base_index                        = local.nexis_base_index 
+  proximity_placement_group_id      = local.proximity_placement_group_id 
   nexis_storage_type                = local.nexis_type
   nexis_storage_vm_size             = local.nexis_vm_size
   nexis_storage_vm_instances        = local.nexis_instances

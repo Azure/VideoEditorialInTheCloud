@@ -12,6 +12,7 @@ module "jump_box" {
   admin_password                  = var.admin_password
   admin_username                  = var.admin_username
   base_index                      = var.base_index
+  proximity_placement_group_id    = var.proximity_placement_group_id 
   vm_os_simple                    = "Desktop"
   storage_account_type            = "Standard_LRS"
   nb_public_ip                    = var.jump_box_vm_number_public_ip

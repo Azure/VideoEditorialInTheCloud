@@ -40,3 +40,8 @@ output "azurerm_subnet_ids" {
   value       = "${local.subnet_ids}"
   description = "The subnet IDs for the VNET"
 }
+
+output "proximity_placement_group_id" {
+  value       = "${azurerm_proximity_placement_group.proximity.id}"
+  description = "The proximity placement group for VMs"
+}

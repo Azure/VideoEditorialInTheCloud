@@ -57,6 +57,10 @@ variable "tags" {
   description = "description"
 }
 
+variable "proximity_placement_group_id" {
+  description = "The proximity placement group for VMs"
+}
+
 #########################
 # General Variables     #
 #########################
