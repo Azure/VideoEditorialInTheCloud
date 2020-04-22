@@ -30,6 +30,7 @@ module "nexis_storage_servers" {
   remote_port                     = var.nexis_storage_vm_remote_port
   nb_instances                    = var.nexis_storage_vm_instances
   base_index                      = var.base_index
+  proximity_placement_group_id    = var.proximity_placement_group_id 
   vm_os_simple                    = "Debian"
   vm_os_version                   = "8.20191118.0"
   vm_size                         = var.nexis_storage_vm_size
@@ -46,9 +47,7 @@ module "nexis_storage_servers" {
 resource "azurerm_virtual_machine_extension" "nexis_storage_servers" {
   name                  = var.hostname
   count                 = var.nexis_storage_vm_instances
-  virtual_machine_name  = var.hostname
-  location              = var.resource_group_location
-  resource_group_name   = var.resource_group_name
+  virtual_machine_id    = module.nexis_storage_servers.vm_ids[count.index]
   publisher             = "Microsoft.Azure.Extensions"
   type                  = "CustomScript"
   type_handler_version  = "2.0"

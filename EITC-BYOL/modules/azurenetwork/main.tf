@@ -13,17 +13,29 @@ resource "azurerm_virtual_network" "vnet" {
   tags                = var.tags
 }
 
+resource "azurerm_proximity_placement_group" "proximity" {
+  name                = "${azurerm_resource_group.network.name}-proximity-group"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.network.name
+  tags                = var.tags
+}
+
 resource "azurerm_subnet" "subnet" {
   name                 = var.subnet_names[count.index]
   virtual_network_name = azurerm_virtual_network.vnet.name
   resource_group_name  = azurerm_resource_group.network.name
   address_prefix       = var.subnet_prefixes[count.index]
-  network_security_group_id = azurerm_network_security_group.security_group.id
   count                =  length(var.subnet_names)
 }
 
 locals {
   subnet_ids = azurerm_subnet.subnet.*.id
+}
+
+resource "azurerm_subnet_network_security_group_association" "example" {
+  subnet_id                 = local.subnet_ids[count.index]
+  network_security_group_id = azurerm_network_security_group.security_group.id
+  count                     = length(var.subnet_names)
 }
 
 resource "azurerm_network_security_group" "security_group" {

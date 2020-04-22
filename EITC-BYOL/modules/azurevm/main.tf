@@ -30,6 +30,7 @@ resource "azurerm_virtual_machine" "vm-linux" {
   vm_size                       = var.vm_size
   network_interface_ids         = [element(azurerm_network_interface.vm.*.id, count.index)]
   delete_os_disk_on_termination = var.delete_os_disk_on_termination
+  #proximity_placement_group_id  = var.proximity_placement_group_id
 
   storage_image_reference {
     id        = var.vm_os_id
@@ -76,6 +77,7 @@ resource "azurerm_virtual_machine" "vm-linux-with-datadisk" {
   vm_size                       = var.vm_size
   network_interface_ids         = [element(azurerm_network_interface.vm.*.id, count.index)]
   delete_os_disk_on_termination = var.delete_os_disk_on_termination
+  #proximity_placement_group_id  = var.proximity_placement_group_id
 
   storage_image_reference {
     id        = var.vm_os_id
@@ -130,6 +132,7 @@ resource "azurerm_virtual_machine" "vm-windows" {
   vm_size                       = var.vm_size
   network_interface_ids         = [element(azurerm_network_interface.vm.*.id, count.index)]
   delete_os_disk_on_termination = var.delete_os_disk_on_termination
+  #proximity_placement_group_id  = var.proximity_placement_group_id
 
   storage_image_reference {
     id        = var.vm_os_id
@@ -174,6 +177,7 @@ resource "azurerm_virtual_machine" "vm-windows-with-datadisk" {
   vm_size                       = var.vm_size
   network_interface_ids         = [element(azurerm_network_interface.vm.*.id, count.index)]
   delete_os_disk_on_termination = var.delete_os_disk_on_termination
+  #proximity_placement_group_id  = var.proximity_placement_group_id
 
   storage_image_reference {
     id        = var.vm_os_id
@@ -224,6 +228,7 @@ resource "azurerm_availability_set" "vm" {
   platform_fault_domain_count  = 2
   platform_update_domain_count = 2
   managed                      = true
+  proximity_placement_group_id  = var.proximity_placement_group_id
   tags                         = var.tags
 }
 
@@ -235,6 +240,13 @@ resource "azurerm_public_ip" "vm" {
   allocation_method   = coalesce(var.allocation_method, var.public_ip_address_allocation, "Dynamic")
   domain_name_label   = format("${var.vm_hostname}-%02.0f-${random_id.vm-sa.hex}",count.index + var.base_index)
   tags                = var.tags
+}
+
+resource "azurerm_network_interface_security_group_association" "security_group_association" {
+  network_interface_id      = azurerm_network_interface.vm.*.id[count.index]
+  network_security_group_id = azurerm_network_security_group.vm.id
+  count                     = var.nb_instances
+
 }
 
 resource "azurerm_network_security_group" "vm" {
@@ -295,7 +307,6 @@ resource "azurerm_network_interface" "vm" {
   name                          = format("nic-${var.vm_hostname}-%02.0f",count.index + var.base_index)
   location                      = var.location
   resource_group_name           = var.resource_group_name
-  network_security_group_id     = azurerm_network_security_group.vm.id
   enable_accelerated_networking = var.enable_accelerated_networking
 
   ip_configuration {

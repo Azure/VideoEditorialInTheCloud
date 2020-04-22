@@ -173,3 +173,7 @@ variable "hide_suffix" {
   description = "description"
   default = false
 }
+
+variable "proximity_placement_group_id" {
+  
+}
