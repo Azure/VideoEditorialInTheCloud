@@ -19,6 +19,20 @@ resource "azurerm_storage_account" "nexis_storage_account" {
   tags                      = var.tags
 }
 
+resource "azurerm_private_endpoint" "nexis_storage_account" {
+  name                = "${var.hostname}${random_string.nexis.result}-pe"
+  resource_group_name = var.resource_group_name
+  location            = var.resource_group_location
+  subnet_id           = var.subnet_id
+
+  private_service_connection {
+    name                           = "${var.hostname}${random_string.nexis.result}-psc"
+    is_manual_connection           = false
+    private_connection_resource_id = azurerm_storage_account.nexis_storage_account.*.id[0]
+    subresource_names              = ["blob"]
+  } 
+}
+
 module "nexis_storage_servers" {
   source                          = "../azurevm"
   resource_group_name             = var.resource_group_name

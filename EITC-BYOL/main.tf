@@ -32,22 +32,22 @@ locals {
   admin_username                    = "azureuser"
   admin_password                    = "Password12345"
   
-  address_space                     = "10.0.0.0/16"
-  subnet_prefixes                   = ["10.0.1.0/24"]
+  address_space                     = "10.1.0.0/16"
+  subnet_prefixes                   = ["10.1.1.0/24","10.1.2.0/24"]
   dns_servers                       = []
-  subnet_names                      = ["default"]
+  subnet_names                      = ["default","storage"]
   
   source_address_prefix             = "*"
   
   jump_box_vm_size                  = "Standard_B2ms"
   jump_box_base_index               = 0
-  jump_box_vm_instances             = 1
-  jump_box_vm_number_public_ip      = 1
+  jump_box_vm_instances             = 0
+  jump_box_vm_number_public_ip      = 0
  
   mediacomposer_vm_size             = "Standard_NV12"
   mediacomposer_base_index          = 0
-  mediacomposer_vm_instances        = 2
-  mediacomposer_vm_number_public_ip = 2
+  mediacomposer_vm_instances        = 0
+  mediacomposer_vm_number_public_ip = 0
 
   nexis_vm_size                     = "Standard_DS4_V2"
   nexis_base_index                  = 0
@@ -81,7 +81,7 @@ module "editorial_networking" {
 locals {
   stored_resource_group_name      = module.editorial_networking.azurerm_resource_group_name
   stored_resource_group_location  = module.editorial_networking.azurerm_resource_group_location
-  stored_subnet_id                = module.editorial_networking.azurerm_subnet_ids[0]
+  stored_subnet_id                = module.editorial_networking.azurerm_subnet_ids
   proximity_placement_group_id    = module.editorial_networking.proximity_placement_group_id
 }
 
@@ -98,7 +98,7 @@ module "jump_box_deployment" {
   admin_password                = local.admin_password
   resource_group_name           = local.stored_resource_group_name
   resource_group_location       = local.stored_resource_group_location
-  subnet_id                     = local.stored_subnet_id
+  subnet_id                     = local.stored_subnet_id[0]
   source_address_prefix         = local.source_address_prefix
   base_index                    = local.jump_box_base_index
   proximity_placement_group_id  = local.proximity_placement_group_id  
@@ -115,7 +115,7 @@ module "media_composer_deployment" {
   admin_password                    = local.admin_password
   resource_group_name               = local.stored_resource_group_name
   resource_group_location           = local.stored_resource_group_location
-  subnet_id                         = local.stored_subnet_id
+  subnet_id                         = local.stored_subnet_id[0]
   source_address_prefix             = local.source_address_prefix
   base_index                        = local.mediacomposer_base_index
   proximity_placement_group_id      = ""  
@@ -131,7 +131,7 @@ module "nexis_deployment" {
   admin_password                    = local.admin_password
   resource_group_name               = local.stored_resource_group_name
   resource_group_location           = local.stored_resource_group_location
-  subnet_id                         = local.stored_subnet_id
+  subnet_id                         = local.stored_subnet_id[1]
   source_address_prefix             = local.source_address_prefix
   base_index                        = local.nexis_base_index 
   proximity_placement_group_id      = local.proximity_placement_group_id 
