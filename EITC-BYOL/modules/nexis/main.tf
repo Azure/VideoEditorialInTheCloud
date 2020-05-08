@@ -1,9 +1,12 @@
 locals{
-  nexis_storage_vm_script_url           = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 0)}"
-  nexis_storage_vm_script_name          = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 1)}"
-  nexis_storage_vm_artifacts_location   = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 2)}"
-  nexis_storage_vm_build                = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 3)}"
-  nexis_storage_vm_part_number          = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 4)}"
+  nexis_storage_vm_script_url         = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 0)}"
+  nexis_storage_vm_script_name        = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 1)}"
+  nexis_storage_vm_artifacts_location = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 2)}"
+  nexis_storage_vm_build              = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 3)}"
+  nexis_storage_vm_part_number        = "${element(split(",", lookup(var.nexis_storage_configuration, var.nexis_storage_type, "")), 4)}"
+  nexis_storage_performance           = "${element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 0)}"
+  nexis_storage_replication           = "${element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 1)}"
+  nexis_storage_account_kind          = "${element(split(",", lookup(var.nexis_storage_account_configuration, var.nexis_storage_type, "")), 2)}"
 }
 
 #############################
@@ -13,9 +16,9 @@ resource "azurerm_storage_account" "nexis_storage_account" {
   name                      = lower("${var.hostname}${random_string.nexis.result}sa")
   resource_group_name       = var.resource_group_name
   location                  = var.resource_group_location
-  account_kind              = "StorageV2"
-  account_tier              = "Premium"
-  account_replication_type  = "LRS"
+  account_kind              = local.nexis_storage_account_kind
+  account_tier              = local.nexis_storage_performance
+  account_replication_type  = local.nexis_storage_replication
   tags                      = var.tags
 }
 
