@@ -84,3 +84,10 @@ variable "nexis_storage_configuration" { # nexis_storage_vm_script_url, nexis_st
     "CloudOnline"   = "https://raw.githubusercontent.com/Azure/VideoEditorialInTheCloud/master/EITC-BYOL/scripts/installNexis.bash,installNexis.bash,https://ssengreleng.blob.core.windows.net/nexisgold/19.12.1/installers,AvidNexisCloud_19.12.1-9.run,0100-40109-00"
   }
 }
+
+variable "nexis_storage_account_configuration" { # nexis_storage_vm_script_url, nexis_storage_vm_script_name, nexis_storage_vm_artifacts_location, nexis_storage_vm_build, nexis_storage_vm_part_number
+  default       = {
+    "CloudNearline" = "Standard,LRS,StorageV2"
+    "CloudOnline"   = "Premium,LRS,BlockBlobStorage"
+  }
+}
