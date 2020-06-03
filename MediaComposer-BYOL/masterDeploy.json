@@ -20,7 +20,7 @@
         "minLength": 3,
         "maxLength": 7,
         "metadata": {
-          "description": "System Name for NEXIS Cloud Edition. 3-char min, 7-char max, lowercase alphanumeric"
+          "description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric."
         }
       },
       "general-NewOrExistingVnet": {
@@ -100,26 +100,26 @@
       },
       "system-MediaComposerClient": {
         "type": "string",
-        "defaultValue": "Media_Composer_2019.6_Win.zip"
+        "defaultValue": "Media_Composer_2020.4._Win.zip"
       },
       "system-TeradiciAgent": {
         "type": "string",
-        "defaultValue": "PCoIP_agent_release_installer_2.11.0.9616_graphics.exe"
+        "defaultValue": "pcoip-agent-graphics_20.04.0.exe"
       },
       "system-NvidiaDriver": {
         "type": "string",
-        "defaultValue": "412.16_grid_win10_server2016_64bit_international.exe"
+        "defaultValue": "442.06_grid_win10_64bit_international_whql.exe"
       },
       "system-NexisWindowsClient": {
         "type": "string",
-        "defaultValue": "AvidNEXISClient_Win64_19.6.0.7.msi"
+        "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi"
       },
       "system-SigniantClient": {
         "type": "string",
         "metadata": {
           "description": "Signiant Install File Name"
         },
-        "defaultValue": "Install_Signiant_Media_Shuttle_v2.9.0.exe"
+        "defaultValue": "Install_Signiant_SDCX_Server_v3.3.2.exe"
       }
     },
   "variables": {
