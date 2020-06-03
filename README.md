@@ -11,7 +11,7 @@ Information about the ecosystem, installation guide, current version supported i
  
 
 ### MediaComposer - BYOL 
-- [MediaComposer](https://github.com/Azure/VideoEditorialInTheCloud/tree/master/EITC-BYOL) 
+- [MediaComposer](https://github.com/Azure/VideoEditorialInTheCloud/tree/master/MediaComposer-BYOL) 
 This project covers installation of Media Composer with Nexis storage ( online) systems in Azure subscriptions using ARM Temaplates. 
  
  
