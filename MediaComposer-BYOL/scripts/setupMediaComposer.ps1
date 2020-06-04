@@ -74,7 +74,7 @@ Remove-WindowsApps($UserPath) {
 function
 Install-ChocolatyAndPackages {
     
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
            
     Write-Log "choco Install Quicktime"
     choco install -y quicktime
@@ -231,6 +231,9 @@ try {
 
         Write-Log "Call Install-MediaComposer"
         Install-MediaComposer
+        
+        Write-Log "Install Additional Software"
+        Install-ChocolatyAndPackages
 
         Write-Log "Cleanup"
         Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue
