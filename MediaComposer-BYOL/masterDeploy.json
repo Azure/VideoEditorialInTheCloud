@@ -123,7 +123,7 @@
       }
     },
   "variables": {
-    "githubBase":"https://raw.githubusercontent.com/Azure/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
+    "githubBase":"https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
     "_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
     "vnetTemplatelink": "[concat(variables('githubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
     "mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]",
