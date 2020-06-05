@@ -142,24 +142,24 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "virtualNetworkName": {
-            "value": "[parameters('general-vnetName')]"
-          },
-          "vnetResourceGroup": {
-            "value": "[parameters('general-vnetResourceGroup')]"
-          },
-          "subnetName": {
-            "value": "[parameters('general-subnetName')]"
-          },
-          "addressSpace": {
-            "value": "[parameters('general-addressSpace')]"
-          },
-          "subnetName": {
-            "value": "[parameters('general-addressSubnet')]"
-          },
-          "workstationName": {
-            "value": "[parameters('general-namePrefix')]"
-          }
+            "virtualNetworkName": {
+                "value": "[parameters('general-vnetName')]"
+            },
+            "vnetResourceGroup": {
+                "value": "[parameters('general-vnetResourceGroup')]"
+            },
+            "subnetName": {
+                "value": "[parameters('general-subnetName')]"
+            },
+            "addressSpace": {
+                "value": "[parameters('general-addressSpace')]"
+            },
+            "addressSubnet": {
+                "value": "[parameters('general-addressSubnet')]"
+            },
+            "workstationName": {
+                "value": "[parameters('general-namePrefix')]"
+            }
         }
       }
     },
@@ -249,10 +249,10 @@
                 "value": "[reference('vnet-template').outputs.subnetRef.value]"
             },
             "addressSpace": {
-                "value": "10.0.0.0/16"
+                "value": "[parameters('general-addressSpace')]"
             },
             "addressSubnet": {
-                "value": "10.0.0.0/24"
+                "value": "[parameters('general-addressSubnet')]"
             },
             "_urlLocation": {
                 "value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
