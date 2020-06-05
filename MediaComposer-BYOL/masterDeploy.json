@@ -233,21 +233,30 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "nexisName": {
-            "value": "[parameters('general-namePrefix')]"
-          },
-          "adminPassword": {
-            "value": "[parameters('general-adminPassword')]"
-          },
-          "vnetName": {
-            "value": "[parameters('general-vnetName')]"
-          },
-          "subnetName": {
-            "value": "[reference('vnet-template').outputs.subnetRef.value]"
-          },
-          "vnetResourceGroup": {
-            "value": "[parameters('general-vnetResourceGroup')]"
-          }
+            "nexisName": {
+                "value": "[parameters('general-namePrefix')]"
+            },
+            "adminPassword": {
+                "value": "[parameters('general-adminPassword')]"
+            },
+            "vnetName": {
+                "value": "[parameters('general-vnetName')]"
+            },
+            "vnetResourceGroup": {
+                "value": "[parameters('general-vnetResourceGroup')]"
+            },
+            "subnetName": {
+                "value": "[reference('vnet-template').outputs.subnetRef.value]"
+            },
+            "addressSpace": {
+                "value": "10.0.0.0/16"
+            },
+            "addressSubnet": {
+                "value": "10.0.0.0/24"
+            },
+            "_urlLocation": {
+                "value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
+            }
         }
       }
     },
