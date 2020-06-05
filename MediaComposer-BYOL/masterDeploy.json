@@ -221,47 +221,6 @@
     },
     {
       "apiVersion": "2015-01-01",
-      "name": "nexis-template",
-      "type": "Microsoft.Resources/deployments",
-      "dependsOn": [
-        "vnet-template"
-      ],
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "[variables('nexisTemplateLink')]",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-            "nexisName": {
-                "value": "[parameters('general-namePrefix')]"
-            },
-            "adminPassword": {
-                "value": "[parameters('general-adminPassword')]"
-            },
-            "vnetName": {
-                "value": "[parameters('general-vnetName')]"
-            },
-            "vnetResourceGroup": {
-                "value": "[parameters('general-vnetResourceGroup')]"
-            },
-            "subnetName": {
-                "value": "[reference('vnet-template').outputs.subnetRef.value]"
-            },
-            "addressSpace": {
-                "value": "[parameters('general-addressSpace')]"
-            },
-            "addressSubnet": {
-                "value": "[parameters('general-addressSubnet')]"
-            },
-            "_urlLocation": {
-                "value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
-            }
-        }
-      }
-    },
-    {
-      "apiVersion": "2015-01-01",
       "name": "signiant-template",
       "type": "Microsoft.Resources/deployments",
       "dependsOn": [
