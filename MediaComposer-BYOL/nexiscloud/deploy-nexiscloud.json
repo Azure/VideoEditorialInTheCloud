@@ -71,9 +71,7 @@
         "deployPublicIPs": "No",
         "nexisBuild": "AvidNexisCloud_20.3.2-17.run",
         "partNumber": "0100-40109-00",
-        "addressStatic": "",
-        "_artifactsLocationSasToken": "",
-        "_buildArtifactsLocationSasToken": ""
+        "addressStatic": ""
     },
     "resources": [
         {

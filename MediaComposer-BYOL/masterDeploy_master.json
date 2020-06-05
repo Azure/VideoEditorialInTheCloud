@@ -164,6 +164,62 @@
       }
     },
     {
+      "apiVersion": "2019-07-01",
+      "name": "mediaComposer-template",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "vnet-template"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('mediaComposerTemplateLink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "workstationName": {
+            "value": "[parameters('general-namePrefix')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('general-adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('general-adminPassword')]"
+          },
+          "vmSize": {
+            "value": "[parameters('mediaComposer-vmSize')]"
+          },
+          "teradiciKey": {
+            "value": "null"
+          },
+          "numberOfInstances": {
+            "value": "[parameters('mediaComposer-instances')]"
+          },
+          "subnetId": {
+            "value": "[reference('vnet-template').outputs.subnetRef.value]"
+          }, 
+          "_artifactsLocation": {
+            "value": "[parameters('system-InstallURL')]"
+          },
+          "_githubLocation":{
+            "value": "[variables('githubBase')]"
+          }, 
+          "mediaComposerFileName": {
+            "value": "[parameters('system-MediaComposerClient')]"
+          }, 
+          "teradiciInstallFileName": {
+            "value": "[parameters('system-TeradiciAgent')]"
+          }, 
+          "nvidiaInstallFileName": {
+            "value": "[parameters('system-NvidiaDriver')]"
+          }, 
+          "nexisClientInstallFileName": {
+            "value": "[parameters('system-NexisWindowsClient')]"
+          }
+        }
+      }
+    },
+    {
       "apiVersion": "2015-01-01",
       "name": "nexis-template",
       "type": "Microsoft.Resources/deployments",
@@ -201,6 +257,50 @@
             "_urlLocation": {
                 "value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
             }
+        }
+      }
+    },
+    {
+      "apiVersion": "2015-01-01",
+      "name": "signiant-template",
+      "type": "Microsoft.Resources/deployments",
+      "dependsOn": [
+        "vnet-template"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('signiantTemplateLink')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "workstationName": {
+            "value": "[parameters('general-namePrefix')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('general-adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('general-adminPassword')]"
+          },
+          "subnetId": {
+            "value": "[reference('vnet-template').outputs.subnetRef.value]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('system-InstallURL')]"
+          },
+          "_githubLocation":{
+            "value": "[variables('githubBase')]"
+          }, 
+          "vmSize":{
+            "value": "Standard_D8_v3"
+          },
+          "signiantInstallName":{
+            "value": "[parameters('system-SigniantClient')]"
+          },
+          "avidNexisClientInstallName":{
+            "value": "[parameters('system-NexisWindowsClient')]"
+          }
         }
       }
     }
