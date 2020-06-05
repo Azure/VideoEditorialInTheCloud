@@ -245,13 +245,13 @@
 						"value": "[parameters('general-vnetResourceGroup')]"
 					},
 					"subnetName": {
-						"value": "default"
+						"value": "[parameters('general-SubnetName')]"
 					},
 					"addressSpace": {
-						"value": "10.0.0.0/16"
+						"value": "[parameters('general-AddressSpace')]"
 					},
 					"addressSubnet": {
-						"value": "10.0.0.0/24"
+						"value": "[parameters('general-AddressSubnet')]"
 					},
 					"_urlLocation": {
 						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
