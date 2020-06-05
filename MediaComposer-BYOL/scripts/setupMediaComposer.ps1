@@ -231,9 +231,6 @@ try {
 
         Write-Log "Call Install-MediaComposer"
         Install-MediaComposer
-        
-        Write-Log "Install Additional Software"
-        Install-ChocolatyAndPackages
 
         Write-Log "Cleanup"
         Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue

@@ -1,12 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\EITC-BYOL\\modules",
     "\\MediaComposer-BYOL",
-    "\\MediaComposer-BYOL\\mediaComposer",
+    "\\MediaComposer-BYOL\\bin",
+    "\\MediaComposer-BYOL\\nexiscloud",
     "\\MediaComposer-BYOL\\scripts",
     "\\MediaComposer-BYOL\\signiant"
   ],
-  "SelectedNode": "\\MediaComposer-BYOL\\scripts\\installSigniant.ps1",
+  "SelectedNode": "\\MediaComposer-BYOL\\README.md",
   "PreviewInSolutionExplorer": false
 }

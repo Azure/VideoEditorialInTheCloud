@@ -20,7 +20,7 @@
         "minLength": 3,
         "maxLength": 7,
         "metadata": {
-          "description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric. Will also be the name of the Nexis Online Cloud Storage"
+          "description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric."
         }
       },
       "general-NewOrExistingVnet": {
@@ -154,7 +154,7 @@
           "addressSpace": {
             "value": "[parameters('general-addressSpace')]"
           },
-          "subnetName": {
+          "addressSubnet": {
             "value": "[parameters('general-addressSubnet')]"
           },
           "workstationName": {
@@ -233,20 +233,41 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "nexisName": {
+          "namePrefix": {
             "value": "[parameters('general-namePrefix')]"
+          },
+          "adminUsername": {
+            "value": "avid"
           },
           "adminPassword": {
             "value": "[parameters('general-adminPassword')]"
           },
-          "vnetName": {
-            "value": "[parameters('general-vnetName')]"
+          "storageAccountType": {
+            "value": "Premium_LRS"
           },
-          "subnetName": {
+          "mediaDiskSize": {
+            "value": 512
+          },
+          "addressStatic": {
+            "value": "[parameters('nexis-addressStatic')]"
+          },
+          "_artifactsLocation": {
+            "value": "[parameters('system-InstallURL')]"
+          },
+          "_buildArtifactsLocation": {
+            "value": "[variables('_buildArtifactsLocation')]"
+          },
+          "_githubLocation":{
+            "value": "[variables('githubBase')]"
+          }, 
+          "nexisBuild": {
+            "value": "AvidNexisCloud_19.8.0-2.run"
+          },
+          "partNumber":{
+            "value": "0100-40109-00"
+          },
+          "subnetId": {
             "value": "[reference('vnet-template').outputs.subnetRef.value]"
-          },
-          "vnetResourceGroup": {
-            "value": "[parameters('general-vnetResourceGroup')]"
           }
         }
       }
