@@ -190,7 +190,7 @@
                 "value": "[parameters('general-vnetResourceGroup')]"
             },
             "subnetName": {
-                "value": "[reference('vnet-template').outputs.subnetRef.value]"
+                "value": "default"
             },
             "addressSpace": {
                 "value": "[parameters('general-addressSpace')]"
