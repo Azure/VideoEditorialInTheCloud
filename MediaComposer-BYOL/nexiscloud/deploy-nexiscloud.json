@@ -74,7 +74,20 @@
 		"addressStatic": ""
 	},
 	"resources": [
-		
+		{
+			"apiVersion": "2019-04-01",
+			"dependsOn": [],
+			"kind": "BlockBlobStorage",
+			"location": "[resourceGroup().location]",
+			"name": "[concat(parameters('nexisName'),'nexisonline')]",
+			"properties": {
+				"supportsHttpsTrafficOnly": true
+			},
+			"sku": {
+				"name": "Premium_LRS"
+			},
+			"type": "Microsoft.Storage/storageAccounts"
+		}
 	],
 	"outputs": {
 		"systemName": {
