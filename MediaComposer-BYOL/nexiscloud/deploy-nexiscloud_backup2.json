@@ -1,0 +1,167 @@
+﻿{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"nexisName": {
+			"type": "string",
+			"minLength": 3,
+			"maxLength": 8,
+			"metadata": {
+				"description": "NEXIS system name. 3-char min, 8-char max, lowercase alphanumeric"
+			}
+		},
+		"adminPassword": {
+			"type": "securestring",
+			"minLength": 12,
+			"metadata": {
+				"description": "Password for the Administrator account of the NEXIS system"
+			}
+		},
+		"vnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the existing or new VNet"
+			}
+		},
+		"vnetResourceGroup": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the Resource Group containing the existing VNet. If deploying a New Vnet, use the name of the Resource Group you're deploying to."
+			}
+		},
+		"subnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the existing or new subnet name in the Vnet to which the MP VMs should be deployed"
+			},
+			"defaultValue": "default"
+		},
+		"addressSpace": {
+			"type": "string",
+			"metadata": {
+				"description": "Address space for Vnet, specify in the form: x.x.x.x/y with y as the mask bits, Ignore if vnet exists"
+			},
+			"defaultValue": "10.0.0.0/16"
+		},
+		"addressSubnet": {
+			"type": "string",
+			"metadata": {
+				"description": "Address subnet for Vnet, specify in the form: x.x.x.x/y with y as the mask bits, Ignore if vnet exists"
+			},
+			"defaultValue": "10.0.0.0/24"
+		},
+		"_urlLocation": {
+			"type": "string",
+			"metadata": {
+				"description": "URL to the installation scripts"
+			},
+			"defaultValue": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
+		}
+	},
+	"variables": {
+		"_artifactsLocation": "[concat(parameters('_urlLocation'), '/AzureProvisioning/nexis.nearline')]",
+		"_artifactsLocationSasToken": "",
+		"_buildArtifactsLocation": "[concat(parameters('_urlLocation'), '/installers')]",
+		"_buildArtifactsLocationSasToken": "",
+		"deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud.json')]",
+		"deployNexisCloud": "deployNexisCloud",
+		"adminUsername": "avid",
+		"newOrExistingVnet": "existing",
+		"privateAddressType": "Static",
+		"deployPublicIPs": "No",
+		"nexisBuild": "AvidNexisCloud_20.3.2-17.run",
+		"partNumber": "0100-40109-00",
+		"addressStatic": ""
+	},
+	"resources": [
+		{
+			"name": "[variables('deployNexisCloud')]",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [],
+			"properties": {
+					"mode": "Incremental",
+					"templateLink": {
+					"uri": "[variables('deployNexisCloudTemplateURL')]",
+					"contentVersion": "1.0.0.0"
+					},
+					"parameters": {
+					"vmName": {
+						"value": "[parameters('nexisName')]"
+					},
+					"adminUsername": {
+						"value": "[variables('adminUsername')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('adminPassword')]"
+					},
+					"newOrExistingVnet": {
+						"value": "[variables('newOrExistingVnet')]"
+					},
+					"vnetName": {
+						"value": "[parameters('vnetName')]"
+					},
+					"vnetResourceGroup": {
+						"value": "[parameters('vnetResourceGroup')]"
+					},
+					"subnetName": {
+						"value": "[parameters('subnetName')]"
+					},
+					"addressSpace": {
+						"value": "[parameters('addressSpace')]"
+					},
+					"addressSubnet": {
+						"value": "[parameters('addressSubnet')]"
+					},
+					"privateAddressType": {
+						"value": "[variables('privateAddressType')]"
+					},
+					"addressStatic": {
+						"value": "[variables('addressStatic')]"
+					},
+					"deployPublicIPs": {
+						"value": "[variables('deployPublicIPs')]"
+					},
+					"_artifactsLocation": {
+						"value": "[variables('_artifactsLocation')]"
+					},
+					"_artifactsLocationSasToken": {
+						"value": "[variables('_artifactsLocationSasToken')]"
+					},
+					"_buildArtifactsLocation": {
+						"value": "[variables('_buildArtifactsLocation')]"
+					},
+					"_buildArtifactsLocationSasToken": {
+						"value": "[variables('_buildArtifactsLocationSasToken')]"
+					},
+					"nexisBuild": {
+						"value": "[variables('nexisBuild')]"
+					},
+					"partNumber": {
+						"value": "[variables('partNumber')]"
+					}
+				}
+			}
+		},
+		{
+			"apiVersion": "2019-04-01",
+			"dependsOn": [],
+			"kind": "BlockBlobStorage",
+			"location": "[resourceGroup().location]",
+			"name": "[concat(parameters('nexisName'),'nexisonline')]",
+			"properties": {
+				"supportsHttpsTrafficOnly": true
+			},
+			"sku": {
+				"name": "Premium_LRS"
+			},
+			"type": "Microsoft.Storage/storageAccounts"
+		}
+	],
+	"outputs": {
+		"systemName": {
+			"type": "string",
+			"value": "[concat('\\\\',reference(variables('deployNexisCloud')).outputs.systemName.value)]"
+		}
+	}
+}

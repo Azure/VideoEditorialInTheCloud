@@ -3,10 +3,11 @@
     "",
     "\\MediaComposer-BYOL",
     "\\MediaComposer-BYOL\\bin",
+    "\\MediaComposer-BYOL\\networking",
     "\\MediaComposer-BYOL\\nexiscloud",
     "\\MediaComposer-BYOL\\scripts",
     "\\MediaComposer-BYOL\\signiant"
   ],
-  "SelectedNode": "\\MediaComposer-BYOL\\nexiscloud\\deploy-nexiscloud.json",
+  "SelectedNode": "\\MediaComposer-BYOL\\masterDeploy_backup2.json",
   "PreviewInSolutionExplorer": false
 }
