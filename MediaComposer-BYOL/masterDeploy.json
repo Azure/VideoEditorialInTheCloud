@@ -163,7 +163,7 @@
 			}
 		},
 		{
-			"apiVersion": "2015-01-01",
+			"apiVersion": "2019-07-01",
 			"name": "mediaComposer-template",
 			"type": "Microsoft.Resources/deployments",
 			"dependsOn": [
@@ -214,6 +214,47 @@
 					},
 					"nexisClientInstallFileName": {
 						"value": "[parameters('system-NexisWindowsClient')]"
+					}
+				}
+			}
+		},
+		{
+			"apiVersion": "2015-01-01",
+			"name": "nexis-template",
+			"type": "Microsoft.Resources/deployments",
+			"dependsOn": [
+				"vnet-template"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('nexisTemplateLink')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"nexisName": {
+						"value": "[parameters('general-namePrefix')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('general-adminPassword')]"
+					},
+					"vnetName": {
+						"value": "[parameters('general-vnetName')]"
+					},
+					"vnetResourceGroup": {
+						"value": "[parameters('general-vnetResourceGroup')]"
+					},
+					"subnetName": {
+						"value": "[parameters('general-SubnetName')]"
+					},
+					"addressSpace": {
+						"value": "[parameters('general-AddressSpace')]"
+					},
+					"addressSubnet": {
+						"value": "[parameters('general-AddressSubnet')]"
+					},
+					"_urlLocation": {
+						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
 					}
 				}
 			}
