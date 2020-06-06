@@ -163,8 +163,8 @@
 			}
 		},
 		{
-			"apiVersion": "2015-01-01",
-			"name": "signiant-template",
+			"apiVersion": "2019-07-01",
+			"name": "mediaComposer-template",
 			"type": "Microsoft.Resources/deployments",
 			"dependsOn": [
 				"vnet-template"
@@ -172,7 +172,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('signiantTemplateLink')]",
+					"uri": "[variables('mediaComposerTemplateLink')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -185,6 +185,15 @@
 					"adminPassword": {
 						"value": "[parameters('general-adminPassword')]"
 					},
+					"vmSize": {
+						"value": "[parameters('mediaComposer-vmSize')]"
+					},
+					"teradiciKey": {
+						"value": "null"
+					},
+					"numberOfInstances": {
+						"value": "[parameters('mediaComposer-instances')]"
+					},
 					"subnetId": {
 						"value": "[reference('vnet-template').outputs.subnetRef.value]"
 					},
@@ -194,14 +203,58 @@
 					"_githubLocation": {
 						"value": "[variables('githubBase')]"
 					},
-					"vmSize": {
-						"value": "Standard_D8_v3"
+					"mediaComposerFileName": {
+						"value": "[parameters('system-MediaComposerClient')]"
 					},
-					"signiantInstallName": {
-						"value": "[parameters('system-SigniantClient')]"
+					"teradiciInstallFileName": {
+						"value": "[parameters('system-TeradiciAgent')]"
 					},
-					"avidNexisClientInstallName": {
+					"nvidiaInstallFileName": {
+						"value": "[parameters('system-NvidiaDriver')]"
+					},
+					"nexisClientInstallFileName": {
 						"value": "[parameters('system-NexisWindowsClient')]"
+					}
+				}
+			}
+		},
+		{
+			"apiVersion": "2015-01-01",
+			"name": "nexis-template",
+			"type": "Microsoft.Resources/deployments",
+			"dependsOn": [
+				"vnet-template"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('nexisTemplateLink')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"nexisName": {
+						"value": "[parameters('general-namePrefix')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('general-adminPassword')]"
+					},
+					"vnetName": {
+						"value": "[parameters('general-vnetName')]"
+					},
+					"vnetResourceGroup": {
+						"value": "[parameters('general-vnetResourceGroup')]"
+					},
+					"subnetName": {
+						"value": "[parameters('general-SubnetName')]"
+					},
+					"addressSpace": {
+						"value": "[parameters('general-AddressSpace')]"
+					},
+					"addressSubnet": {
+						"value": "[parameters('general-AddressSubnet')]"
+					},
+					"_urlLocation": {
+						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
 					}
 				}
 			}
