@@ -81,9 +81,6 @@
 			"apiVersion": "2015-01-01",
 			"name": "signiant-template",
 			"type": "Microsoft.Resources/deployments",
-			"dependsOn": [
-				"vnet-template"
-			],
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
