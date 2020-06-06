@@ -15,6 +15,12 @@
 				"description": "Password for the Administrator account of the VMs"
 			}
 		},
+		"general-VnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the new or existing Virtual Network (depending on choice above). If you chose Existing above, the name of the Vnet you enter here must match an existing Vnet, or deployment will fail"
+			}
+		},
 		"general-NamePrefix": {
 			"type": "string",
 			"minLength": 3,
@@ -95,13 +101,6 @@
 		"system-NexisWindowsClient": {
 			"type": "string",
 			"defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi"
-		},
-		"system-SigniantClient": {
-			"type": "string",
-			"metadata": {
-				"description": "Signiant Install File Name"
-			},
-			"defaultValue": "Install_Signiant_SDCX_Server_v3.3.2.exe"
 		}
 	},
 	"variables": {
@@ -143,7 +142,7 @@
 						"value": "[parameters('mediaComposer-instances')]"
 					},
 					"subnetId": {
-						"value": "[concat(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('subnetName'))]"
+						"value": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]"
 					},
 					"_artifactsLocation": {
 						"value": "[parameters('system-InstallURL')]"
