@@ -113,9 +113,6 @@
 			"apiVersion": "2019-07-01",
 			"name": "mediaComposer-template",
 			"type": "Microsoft.Resources/deployments",
-			"dependsOn": [
-				"vnet-template"
-			],
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
