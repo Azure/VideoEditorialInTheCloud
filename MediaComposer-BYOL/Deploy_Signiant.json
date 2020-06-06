@@ -15,29 +15,18 @@
 				"description": "Password for the Administrator account of the VMs"
 			}
 		},
+		"general-VnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the new or existing Virtual Network (depending on choice above). If you chose Existing above, the name of the Vnet you enter here must match an existing Vnet, or deployment will fail"
+			}
+		},
 		"general-NamePrefix": {
 			"type": "string",
 			"minLength": 3,
 			"maxLength": 7,
 			"metadata": {
 				"description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric. Will also be the name of the Nexis Online Cloud Storage"
-			}
-		},
-		"general-NewOrExistingVnet": {
-			"type": "string",
-			"metadata": {
-				"description": " New if you choose to create a new Virtual Network. Existing if you choose to use Virtual Network that has already been created. (To create a Vnet outside of this form, please go to the Azure portal and create a VNET under the resource group)"
-			},
-			"defaultValue": "new",
-			"allowedValues": [
-				"new",
-				"existing"
-			]
-		},
-		"general-VnetName": {
-			"type": "string",
-			"metadata": {
-				"description": "Name of the new or existing Virtual Network (depending on choice above). If you chose Existing above, the name of the Vnet you enter here must match an existing Vnet, or deployment will fail"
 			}
 		},
 		"general-VnetResourceGroup": {
@@ -113,7 +102,7 @@
 						"value": "[parameters('general-adminPassword')]"
 					},
 					"subnetId": {
-						"value": "[concat(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('subnetName'))]"
+						"value": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]"
 					},
 					"_artifactsLocation": {
 						"value": "[parameters('system-InstallURL')]"
