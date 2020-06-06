@@ -6,11 +6,9 @@
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2FDeploy_Vnet.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
 
-2) Deploy Signiant
+2) Deploy Signiant or FileCatalyst <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2FDeploy_Signiant.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2FDeploy_Signiant.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
-
-3) Deploy Media Composer (with Nvidia Driver)
+3) Deploy Media Composer (with Nvidia Driver) or Media Composer (with AMD driver)
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2FDeploy_MediaComposer.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
 
