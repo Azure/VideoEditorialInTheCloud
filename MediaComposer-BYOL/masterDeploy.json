@@ -161,6 +161,50 @@
 					}
 				}
 			}
+		},
+		{
+			"apiVersion": "2015-01-01",
+			"name": "signiant-template",
+			"type": "Microsoft.Resources/deployments",
+			"dependsOn": [
+				"vnet-template"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('signiantTemplateLink')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"workstationName": {
+						"value": "[parameters('general-namePrefix')]"
+					},
+					"adminUsername": {
+						"value": "[parameters('general-adminUsername')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('general-adminPassword')]"
+					},
+					"subnetId": {
+						"value": "[reference('vnet-template').outputs.subnetRef.value]"
+					},
+					"_artifactsLocation": {
+						"value": "[parameters('system-InstallURL')]"
+					},
+					"_githubLocation": {
+						"value": "[variables('githubBase')]"
+					},
+					"vmSize": {
+						"value": "Standard_D8_v3"
+					},
+					"signiantInstallName": {
+						"value": "[parameters('system-SigniantClient')]"
+					},
+					"avidNexisClientInstallName": {
+						"value": "[parameters('system-NexisWindowsClient')]"
+					}
+				}
+			}
 		}
 	],
 	"outputs": {
