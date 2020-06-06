@@ -248,7 +248,7 @@
 						"value": "default"
 					},
 					"addressSpace": {
-						"value": "[10.0.0.0/16"
+						"value": "10.0.0.0/16"
 					},
 					"addressSubnet": {
 						"value": "10.0.0.0/24"
