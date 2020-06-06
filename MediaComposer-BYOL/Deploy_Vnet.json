@@ -58,8 +58,7 @@
 	"variables": {
 		"githubBase": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
 		"_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
-		"vnetTemplatelink": "[concat(variables('githubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
-		"signiantTemplateLink": "[concat(variables('githubBase'),'/signiant/','signiantazuredeploy.json')]"
+		"vnetTemplatelink": "[concat(variables('githubBase'),'/networking/','new','vnet.json')]"
 	},
 	"resources": [
 		{

@@ -91,38 +91,6 @@
 	"resources": [
 		{
 			"apiVersion": "2015-01-01",
-			"name": "vnet-template",
-			"type": "Microsoft.Resources/deployments",
-			"properties": {
-				"mode": "Incremental",
-				"templateLink": {
-					"uri": "[variables('vnetTemplatelink')]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"virtualNetworkName": {
-						"value": "[parameters('general-vnetName')]"
-					},
-					"vnetResourceGroup": {
-						"value": "[parameters('general-vnetResourceGroup')]"
-					},
-					"subnetName": {
-						"value": "[parameters('general-subnetName')]"
-					},
-					"addressSpace": {
-						"value": "[parameters('general-addressSpace')]"
-					},
-					"addressSubnet": {
-						"value": "[parameters('general-addressSubnet')]"
-					},
-					"workstationName": {
-						"value": "[parameters('general-namePrefix')]"
-					}
-				}
-			}
-		},
-		{
-			"apiVersion": "2015-01-01",
 			"name": "signiant-template",
 			"type": "Microsoft.Resources/deployments",
 			"dependsOn": [
@@ -145,7 +113,7 @@
 						"value": "[parameters('general-adminPassword')]"
 					},
 					"subnetId": {
-						"value": "[reference('vnet-template').outputs.subnetRef.value]"
+						"value": "[concat(resourceId(parameters('vnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('subnetName'))]"
 					},
 					"_artifactsLocation": {
 						"value": "[parameters('system-InstallURL')]"
