@@ -44,6 +44,16 @@ Install-NexisClient {
     
 }
 
+function
+Install-ChocolatyAndPackages {
+    
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+    Write-Log "choco Install Google Chrome"
+    choco install -y googlechrome -ignore-checksum
+
+}
+
 function 
 Install-SigniantMediaShuttle {
    
@@ -58,6 +68,14 @@ Install-SigniantMediaShuttle {
 try {
     $dest = "D:\AzureData"
     New-Item -Path $dest -ItemType directory -Force
+
+    try {
+            Write-Log "Installing chocolaty and packages"
+            Install-ChocolatyAndPackages
+        }
+        catch {
+            # chocolaty is best effort
+        }
     
     Write-Log "Call Install-NexisCLient"
     Install-NexisClient
