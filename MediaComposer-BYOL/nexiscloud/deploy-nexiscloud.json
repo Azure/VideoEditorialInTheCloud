@@ -2,7 +2,7 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-		"nexisName": {
+		"_nexisName": {
 			"type": "string",
 			"minLength": 3,
 			"maxLength": 8,
@@ -10,40 +10,40 @@
 				"description": "NEXIS system name. 3-char min, 8-char max, lowercase alphanumeric"
 			}
 		},
-		"adminPassword": {
+		"_adminPassword": {
 			"type": "securestring",
 			"minLength": 12,
 			"metadata": {
 				"description": "Password for the Administrator account of the NEXIS system"
 			}
 		},
-		"vnetName": {
+		"_vnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the existing or new VNet"
 			}
 		},
-		"vnetResourceGroup": {
+		"_vnetResourceGroup": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the Resource Group containing the existing VNet. If deploying a New Vnet, use the name of the Resource Group you're deploying to."
 			}
 		},
-		"subnetName": {
+		"_subnetName": {
 			"type": "string",
 			"metadata": {
 				"description": "Name of the existing or new subnet name in the Vnet to which the MP VMs should be deployed"
 			},
 			"defaultValue": "default"
 		},
-		"addressSpace": {
+		"_addressSpace": {
 			"type": "string",
 			"metadata": {
 				"description": "Address space for Vnet, specify in the form: x.x.x.x/y with y as the mask bits, Ignore if vnet exists"
 			},
 			"defaultValue": "10.0.0.0/16"
 		},
-		"addressSubnet": {
+		"_addressSubnet": {
 			"type": "string",
 			"metadata": {
 				"description": "Address subnet for Vnet, specify in the form: x.x.x.x/y with y as the mask bits, Ignore if vnet exists"
@@ -142,6 +142,20 @@
 					}
 				}
 			}
+		},
+		{
+			"apiVersion": "2019-04-01",
+			"dependsOn": [],
+			"kind": "BlockBlobStorage",
+			"location": "[resourceGroup().location]",
+			"name": "[concat(parameters('nexisName'),'nexisonline')]",
+			"properties": {
+				"supportsHttpsTrafficOnly": true
+			},
+			"sku": {
+				"name": "Premium_LRS"
+			},
+			"type": "Microsoft.Storage/storageAccounts"
 		}
 	],
 	"outputs": {
