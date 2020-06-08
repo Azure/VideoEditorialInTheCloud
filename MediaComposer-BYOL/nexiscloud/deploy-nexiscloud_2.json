@@ -1,0 +1,311 @@
+﻿{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmName": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 15,
+            "metadata": {
+                "description": "System Name for NEXIS Cloud Edition. 3-char min, 15-char max, lowercase alphanumeric"
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Administrator of the VMs"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "minLength": 12,
+            "metadata": {
+                "description": "Password for the Administrator account of the VMs"
+            }
+        },
+        "newOrExistingVnet": {
+            "type": "string"
+        },
+        "vnetName": {
+            "type": "string"
+        },
+        "vnetResourceGroup": {
+            "type": "string"
+        },
+        "subnetName": {
+            "type": "string"
+        },
+        "addressSpace": {
+            "type": "string"
+        },
+        "addressSubnet": {
+            "type": "string"
+        },
+        "privateAddressType": {
+            "type": "string",
+            "defaultValue": "Static"
+        },
+        "addressStatic": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "deployPublicIps": {
+            "type": "string"
+        },
+        "_artifactsLocation": {
+            "type": "string"
+        },
+        "_artifactsLocationSasToken": {
+            "type": "string"
+        },
+        "_buildArtifactsLocation": {
+            "type": "string"
+        },
+        "_buildArtifactsLocationSasToken": {
+            "type": "string"
+        },
+        "nexisBuild": {
+            "type": "string"
+        },
+        "partNumber": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "sdVmSize": "Standard_DS4_v2",
+        "sdPublicIPAddressName": "[concat(parameters('vmName'),'IP')]",
+        "publicIPAddressType": "Dynamic",
+        "sdDnsLabelPrefix": "[parameters('vmName')]",
+        "vmLoopTemplateURL": "[concat(parameters('_artifactsLocation'),'/nestedtemplates/newVM.json',parameters('_artifactsLocationSasToken'))]",
+        "imagePublisher": "credativ",
+        "imageOffer": "Debian",
+        "imageSKU": "8",
+        "imageVersion": "latest",
+        "vnetTemplatelink": "[concat(parameters('_artifactsLocation'),'/nestedtemplates/',parameters('newOrExistingVnet'),'vnet.json')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2015-01-01",
+            "name": "vnet-template",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('vnetTemplatelink'), parameters('_artifactsLocationSasToken'))]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "virtualNetworkName": {
+                        "value": "[parameters('vnetName')]"
+                    },
+                    "vnetResourceGroup": {
+                        "value": "[parameters('vnetResourceGroup')]"
+                    },
+                    "subnetName": {
+                        "value": "[parameters('subnetName')]"
+                    },
+                    "addressSpace": {
+                        "value": "[parameters('addressSpace')]"
+                    },
+                    "addressSubnet": {
+                        "value": "[parameters('addressSubnet')]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2015-06-15",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('sdPublicIPAddressName')]",
+            "condition": "[equals(parameters('deployPublicIps'), 'Yes')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+                "dnsSettings": {
+                    "domainNameLabel": "[variables('sdDnsLabelPrefix')]"
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('vmName'), '-nic')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+                "Microsoft.Resources/deployments/vnet-template"
+            ],
+            "copy": {
+                "name": "sdnicLoop",
+                "count": "[int('1')]"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[reference('vnet-template').outputs.subnetRef.value]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[concat('update', parameters('vmName'), '-nicStatic')]",
+            "condition": "[equals(parameters('privateAddressType'), 'Static')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2015-01-01",
+            "dependsOn": [
+                "sdnicLoop"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "parameters": {
+                    "nicName": {
+                        "value": "[concat(parameters('vmName'), '-nic')]"
+                    },
+                    "privateIp": {
+                        "value": "[if(empty(parameters('addressStatic')), reference(concat('Microsoft.Network/networkInterfaces/', concat(parameters('vmName'), '-nic'))).ipConfigurations[0].properties.privateIPAddress, parameters('addressStatic'))]"
+                    },
+                    "subnetId": {
+                        "value": "[reference('vnet-template').outputs.subnetRef.value]"
+                    }
+                },
+                "templateLink": {
+                    "uri": "[concat(parameters('_artifactsLocation'), '/nestedtemplates/updateNicStaticPrivateIP.json', parameters('_artifactsLocationSasToken'))]",
+                    "contentVersion": "1.0.0.0"
+                }
+            }
+        },
+        {
+            "name": "[concat('update', parameters('vmName'), '-nicPublic')]",
+            "condition": "[equals(parameters('deployPublicIps'), 'Yes')]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2015-01-01",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', variables('sdPublicIPAddressName'))]",
+                "sdnicLoop"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "parameters": {
+                    "nicName": {
+                        "value": "[concat(parameters('vmName'), '-nic')]"
+                    },
+                    "privateAddressType": {
+                        "value": "[parameters('privateAddressType')]"
+                    },
+                    "privateIPAddress": {
+                        "value": "[reference(concat('update', parameters('vmName'), '-nicStatic')).outputs.privateIPAddress.value]"
+                    },
+                    "publicIpAddressId": {
+                        "value": "[resourceId('Microsoft.Network/publicIpAddresses', variables('sdPublicIPAddressName'))]"
+                    },
+                    "subnetId": {
+                        "value": "[reference('vnet-template').outputs.subnetRef.value]"
+                    }
+                },
+                "templateLink": {
+                    "uri": "[concat(parameters('_artifactsLocation'), '/nestedtemplates/updateNicPublicIP.json', parameters('_artifactsLocationSasToken'))]",
+                    "contentVersion": "1.0.0.0"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2015-01-01",
+            "copy": {
+                "name": "sdVirtualMachineLoop",
+                "count": "[int('1')]"
+            },
+            "name": "[concat(parameters('vmName'),'-newsdVM')]",
+            "dependsOn": [
+                "sdnicLoop"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('vmLoopTemplateURL')]"
+                },
+                "parameters": {
+                    "vmName": {
+                        "value": "[parameters('vmName')]"
+                    },
+                    "vmAvailabilitySetName": {
+                        "value": ""
+                    },
+                    "storageAccountType": {
+                        "value": "Premium_LRS"
+                    },
+                    "vmSize": {
+                        "value": "[variables('sdVmSize')]"
+                    },
+                    "vmDiskCount": {
+                        "value": "[int('1')]"
+                    },
+                    "vmDiskSize": {
+                        "value": "[int('128')]"
+                    },
+                    "tagSystemName": {
+                        "value": "[parameters('vmName')]"
+                    },
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    },
+                    "_artifactsLocation": {
+                        "value": "[parameters('_artifactsLocation')]"
+                    },
+                    "_artifactsLocationSasToken": {
+                        "value": "[parameters('_artifactsLocationSasToken')]"
+                    },
+                    "imagePublisher": {
+                        "value": "[variables('imagePublisher')]"
+                    },
+                    "imageOffer": {
+                        "value": "[variables('imageOffer')]"
+                    },
+                    "imageSKU": {
+                        "value": "[variables('imageSKU')]"
+                    },
+                    "imageVersion": {
+                        "value": "[variables('imageVersion')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('vmName'), '/', 'installNexis')]",
+            "apiVersion": "2015-06-15",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "sdVirtualMachineLoop"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "[concat(parameters('_artifactsLocation'), '/bin/installNexis.bash', parameters('_artifactsLocationSasToken'))]"
+                    ]
+                },
+                "protectedSettings": {
+                    "commandToExecute": "[concat('/bin/bash installNexis.bash ', parameters('vmName'), ' ', parameters('_buildArtifactsLocation'), ' \"', parameters('_buildArtifactsLocationSasToken'), '\" ', parameters('nexisBuild'), ' ', parameters('partNumber'))]"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "systemName": {
+            "type": "string",
+            "value": "[parameters('vmName')]"
+        }
+    }
+}

@@ -117,7 +117,7 @@
 		"_artifactsLocationSasToken": "[parameters('_sasToken')]",
 		"_buildArtifactsLocation": "[concat(parameters('_urlLocation'), '/installers')]",
 		"_buildArtifactsLocationSasToken": "[parameters('_sasToken')]",
-		"deployNexisCloudTemplateURL": "[concat(variables('_artifactsLocation'),'/nestedtemplates/deploy-nexiscloud.json',parameters('_sasToken'))]",
+		"deployNexisCloudTemplateURL": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL/nexiscloud/deploy-nexiscloud2.json",
 		"deployNexisCloud": "deployNexisCloud",
 		"adminUsername": "avid",
 		"privateIPAddressType": "Static"
