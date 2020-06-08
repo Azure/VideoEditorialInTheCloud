@@ -134,9 +134,6 @@
 			"apiVersion": "2015-01-01",
 			"name": "nexis-template",
 			"type": "Microsoft.Resources/deployments",
-			"dependsOn": [
-				"vnet-template"
-			],
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
