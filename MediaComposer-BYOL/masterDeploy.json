@@ -233,16 +233,16 @@
 				},
 				"parameters": {
 					"nexisName": {
-						"value": "eitc"
+						"value": "[parameters('general-namePrefix')]"
 					},
 					"adminPassword": {
-						"value": "Avid1234567$"
+						"value": "[parameters('general-adminPassword')]"
 					},
 					"vnetName": {
-						"value": "eitc-vnet-01"
+						"value": "[parameters('general-vnetName')]"
 					},
 					"vnetResourceGroup": {
-						"value": "avid-sdbx-ben-eitc-01"
+						"value": "[parameters('general-vnetResourceGroup')]"
 					},
 					"subnetName": {
 						"value": "default"
