@@ -15,12 +15,6 @@
 				"description": "Password for the Administrator account of the VMs"
 			}
 		},
-		"general-VnetName": {
-			"type": "string",
-			"metadata": {
-				"description": "Name of the existing Virtual Network."
-			}
-		},
 		"general-NamePrefix": {
 			"type": "string",
 			"minLength": 3,
@@ -33,6 +27,12 @@
 			"type": "string",
 			"metadata": {
 				"description": "Name of the Resource Group where the existing Vnet is deployed."
+			}
+		},
+		"general-VnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the existing Virtual Network."
 			}
 		},
 		"general-SubnetName": {
@@ -184,11 +184,11 @@
 			"apiVersion": "2019-07-01",
 			"name": "[concat(variables('networkSecurityGroupName'))]",
 			"type": "Microsoft.Resources/deployments",
+			"dependsOn": [
+				"vnet-template"
+			],
 			"properties": {
 				"mode": "Incremental",
-				"dependsOn": [
-					"vnet-template"
-				],
 				"templateLink": {
 					"uri": "[variables('mediaComposerTemplateLink')]",
 					"contentVersion": "1.0.0.0"
