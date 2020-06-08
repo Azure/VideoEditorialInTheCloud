@@ -218,6 +218,77 @@
 			}
 		},
 		{
+			"name": "deployNexisCloud",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2015-01-01",
+			"dependsOn": [
+				"vnet-template"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2/AzureProvisioning/nexis.nearline/nestedtemplates/deploy-nexiscloud.json",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"vmName": {
+						"value": "[parameters('general-NamePrefix')]"
+					},
+					"adminUsername": {
+						"value": "avid"
+					},
+					"adminPassword": {
+						"value": "[parameters('general-AdminPassword')]"
+					},
+					"newOrExistingVnet": {
+						"value": "existing"
+					},
+					"vnetName": {
+						"value": "[parameters('general-VnetName')]"
+					},
+					"vnetResourceGroup": {
+						"value": "[parameters('general-VnetResourceGroup')]"
+					},
+					"subnetName": {
+						"value": "[parameters('general-SubnetName')]"
+					},
+					"addressSpace": {
+						"value": "[parameters('general-AddressSpace')]"
+					},
+					"addressSubnet": {
+						"value": "[parameters('general-AddressSubnet')]"
+					},
+					"privateAddressType": {
+						"value": "Static"
+					},
+					"addressStatic": {
+						"value": ""
+					},
+					"deployPublicIPs": {
+						"value": "No"
+					},
+					"_artifactsLocation": {
+						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2/AzureProvisioning/nexis.nearline"
+					},
+					"_artifactsLocationSasToken": {
+						"value": ""
+					},
+					"_buildArtifactsLocation": {
+						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2/installers"
+					},
+					"_buildArtifactsLocationSasToken": {
+						"value": ""
+					},
+					"nexisBuild": {
+						"value": "AvidNexisCloud_20.3.2-17.run"
+					},
+					"partNumber": {
+						"value": "0100-40109-00"
+					}
+				}
+			}
+		},
+		{
 			"apiVersion": "2015-01-01",
 			"name": "signiant-template",
 			"type": "Microsoft.Resources/deployments",
