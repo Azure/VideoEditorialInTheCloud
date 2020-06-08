@@ -1,0 +1,262 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"general-AdminUsername": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the Administrator of the VMs"
+			}
+		},
+		"general-AdminPassword": {
+			"type": "securestring",
+			"minLength": 12,
+			"metadata": {
+				"description": "Password for the Administrator account of the VMs"
+			}
+		},
+		"general-NamePrefix": {
+			"type": "string",
+			"minLength": 3,
+			"maxLength": 7,
+			"metadata": {
+				"description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric."
+			}
+		},
+		"general-VnetResourceGroup": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the Resource Group where the existing Vnet is deployed."
+			}
+		},
+		"general-VnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the existing Virtual Network."
+			}
+		},
+		"general-SubnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Existing subnet in where VMs should be deployed"
+			},
+			"defaultValue": "default"
+		},
+		"mediaComposer-VmSize": {
+			"type": "string",
+			"defaultValue": "Standard_NV12s_v3",
+			"metadata": {
+				"description": "Size of the Media Composer VM."
+			},
+			"allowedValues": [
+				"Standard_NV12",
+				"Standard_NV12_Promo",
+				"Standard_NV12s_v2",
+				"Standard_NV12s_v3"
+			]
+		},
+		"mediaComposer-Instances": {
+			"type": "int",
+			"defaultValue": 1,
+			"metadata": {
+				"description": "Number of MediaComposer VMs to deploy"
+			}
+		},
+		"system-InstallURL": {
+			"type": "string"
+		},
+		"system-MediaComposerClient": {
+			"type": "string",
+			"defaultValue": "Media_Composer_2020.4._Win.zip"
+		},
+		"system-TeradiciAgent": {
+			"type": "string",
+			"defaultValue": "pcoip-agent-graphics_20.04.0.exe"
+		},
+		"system-NvidiaDriver": {
+			"type": "string",
+			"defaultValue": "442.06_grid_win10_64bit_international_whql.exe"
+		},
+		"system-NexisWindowsClient": {
+			"type": "string",
+			"defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi"
+		}
+	},
+	"variables": {
+		"githubBase": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
+		"_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
+		"mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]",
+		"networkSecurityGroupName": "[concat(parameters('general-NamePrefix'),'-mc-nsg')]",
+		"networkSecurityGroupRules": [
+			{
+				"name": "RDP",
+				"properties": {
+					"priority": 300,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "3389"
+				}
+			},
+			{
+				"name": "PCoIPtcp",
+				"properties": {
+					"priority": 301,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "4172"
+				}
+			},
+			{
+				"name": "PCoIPudp",
+				"properties": {
+					"priority": 302,
+					"protocol": "UDP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "4172"
+				}
+			},
+			{
+				"name": "certauthhttp",
+				"properties": {
+					"priority": 303,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "80"
+				}
+			},
+			{
+				"name": "certauthhttps",
+				"properties": {
+					"priority": 304,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "443"
+				}
+			},
+			{
+				"name": "Teradici",
+				"properties": {
+					"priority": 305,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "60443"
+				}
+			}
+
+		]
+	},
+	"resources": [
+		{
+			"name": "[concat(variables('networkSecurityGroupName'))]",
+			"type": "Microsoft.Network/networkSecurityGroups",
+			"apiVersion": "2018-08-01",
+			"location": "[resourceGroup().location]",
+			"properties": {
+				"securityRules": "[variables('networkSecurityGroupRules')]"
+			},
+			"tags": {}
+		},
+		{
+			"apiVersion": "2019-07-01",
+			"name": "mediaComposer-template",
+			"type": "Microsoft.Resources/deployments",
+			"dependsOn": [
+				"[concat(variables('networkSecurityGroupName'))]"
+			],
+			"properties": {
+				"mode": "Incremental",
+				"templateLink": {
+					"uri": "[variables('mediaComposerTemplateLink')]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"workstationName": {
+						"value": "[parameters('general-namePrefix')]"
+					},
+					"adminUsername": {
+						"value": "[parameters('general-adminUsername')]"
+					},
+					"adminPassword": {
+						"value": "[parameters('general-adminPassword')]"
+					},
+					"vmSize": {
+						"value": "[parameters('mediaComposer-vmSize')]"
+					},
+					"teradiciKey": {
+						"value": "null"
+					},
+					"numberOfInstances": {
+						"value": "[parameters('mediaComposer-instances')]"
+					},
+					"subnetId": {
+						"value": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]"
+					},
+					"_artifactsLocation": {
+						"value": "[parameters('system-InstallURL')]"
+					},
+					"_githubLocation": {
+						"value": "[variables('githubBase')]"
+					},
+					"mediaComposerFileName": {
+						"value": "[parameters('system-MediaComposerClient')]"
+					},
+					"teradiciInstallFileName": {
+						"value": "[parameters('system-TeradiciAgent')]"
+					},
+					"nvidiaInstallFileName": {
+						"value": "[parameters('system-NvidiaDriver')]"
+					},
+					"nexisClientInstallFileName": {
+						"value": "[parameters('system-NexisWindowsClient')]"
+					}
+				}
+			}
+		}
+	],
+	"outputs": {
+		"general-namePrefix": {
+			"type": "string",
+			"value": "[parameters('general-namePrefix')]"
+		},
+		"general-adminUsername": {
+			"type": "string",
+			"value": "[parameters('general-adminUsername')]"
+		},
+		"general-adminPassword": {
+			"type": "string",
+			"value": "[parameters('general-adminPassword')]"
+		},
+		"resourceGroupName": {
+			"type": "string",
+			"value": "[resourceGroup().name]"
+		},
+		"resourceGroupLocation": {
+			"type": "string",
+			"value": "[resourceGroup().location]"
+		}
+	}
+}
