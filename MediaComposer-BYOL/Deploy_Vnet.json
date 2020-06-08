@@ -50,7 +50,7 @@
 				},
 				"parameters": {
 					"virtualNetworkName": {
-						"value": "[concat(parameters('general-NamePrefix'),'/-vnet-01')"
+						"value": "[concat(parameters('general-NamePrefix'),'-vnet-01')]"
 					},
 					"subnetName": {
 						"value": "[parameters('general-subnetName')]"
