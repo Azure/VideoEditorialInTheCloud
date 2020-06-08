@@ -17,21 +17,10 @@
                 "description": "Password for the Administrator account of the NEXIS system"
             }
         },
-        "newOrExistingVnet": {
-            "type": "string",
-            "allowedValues": [
-                "new",
-                "existing"
-            ],
-            "metadata": {
-                "description": "Select if these VMs will need a new VNet or will reference an existing VNet"
-            },
-            "defaultValue": "new"
-        },
         "vnetName": {
             "type": "string",
             "metadata": {
-                "description": "Name of the existing or new VNet"
+                "description": "Name of the existing VNet"
             }
         },
         "vnetResourceGroup": {
@@ -43,23 +32,9 @@
         "subnetName": {
             "type": "string",
             "metadata": {
-                "description": "Name of the existing or new subnet name in the Vnet to which the MP VMs should be deployed"
+                "description": "Name of the existing subnet name in the Vnet to which the MP VMs should be deployed"
             },
             "defaultValue": "default"
-        },
-        "addressSpace": {
-            "type": "string",
-            "metadata": {
-                "description": "Address space for Vnet, specify in the form: x.x.x.x/y with y as the mask bits, Ignore if vnet exists"
-            },
-            "defaultValue": "10.0.0.0/16"
-        },
-        "addressSubnet": {
-            "type": "string",
-            "metadata": {
-                "description": "Address subnet for Vnet, specify in the form: x.x.x.x/y with y as the mask bits, Ignore if vnet exists"
-            },
-            "defaultValue": "10.0.0.0/24"
         }
     },
     "variables": {
@@ -97,7 +72,7 @@
                         "value": "[parameters('adminPassword')]"
                     },
                     "newOrExistingVnet": {
-                        "value": "[parameters('newOrExistingVnet')]"
+                        "value": "existing"
                     },
                     "vnetName": {
                         "value": "[parameters('vnetName')]"
@@ -109,10 +84,10 @@
                         "value": "[parameters('subnetName')]"
                     },
                     "addressSpace": {
-                        "value": "[parameters('addressSpace')]"
+                        "value": ""
                     },
                     "addressSubnet": {
-                        "value": "[parameters('addressSubnet')]"
+                        "value": ""
                     },
                     "privateAddressType": {
                         "value": "[variables('privateIPAddressType')]"
