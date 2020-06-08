@@ -221,7 +221,9 @@
 			"name": "deployNexisCloud",
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "2015-01-01",
-			"dependsOn": [],
+			"dependsOn": [
+				"vnet-template"
+			],
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
