@@ -73,7 +73,7 @@
 			"type": "string",
 			"defaultValue": "pcoip-agent-graphics_20.04.0.exe"
 		},
-		"system-NvidiaDriver": {
+		"system-AmdDriver": {
 			"type": "string",
 			"defaultValue": "442.06_grid_win10_64bit_international_whql.exe"
 		},
@@ -85,7 +85,7 @@
 	"variables": {
 		"githubBase": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
 		"_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
-		"mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]",
+		"mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy_AMD.json')]",
 		"networkSecurityGroupName": "[concat(parameters('general-NamePrefix'),'-mc-nsg')]",
 		"networkSecurityGroupRules": [
 			{
@@ -228,7 +228,7 @@
 						"value": "[parameters('system-TeradiciAgent')]"
 					},
 					"nvidiaInstallFileName": {
-						"value": "[parameters('system-NvidiaDriver')]"
+						"value": "[parameters('system-AmdDriver')]"
 					},
 					"nexisClientInstallFileName": {
 						"value": "[parameters('system-NexisWindowsClient')]"
