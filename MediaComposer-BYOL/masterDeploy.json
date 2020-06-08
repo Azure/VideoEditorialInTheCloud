@@ -232,25 +232,25 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					"_nexisName": {
+					"nexisName": {
 						"value": "[parameters('general-namePrefix')]"
 					},
-					"_adminPassword": {
+					"adminPassword": {
 						"value": "[parameters('general-adminPassword')]"
 					},
-					"_vnetName": {
+					"vnetName": {
 						"value": "[parameters('general-vnetName')]"
 					},
-					"_vnetResourceGroup": {
+					"vnetResourceGroup": {
 						"value": "[parameters('general-vnetResourceGroup')]"
 					},
-					"_subnetName": {
+					"subnetName": {
 						"value": "default"
 					},
-					"_addressSpace": {
+					"addressSpace": {
 						"value": "10.0.0.0/16"
 					},
-					"_addressSubnet": {
+					"addressSubnet": {
 						"value": "10.0.0.0/24"
 					},
 					"_urlLocation": {
