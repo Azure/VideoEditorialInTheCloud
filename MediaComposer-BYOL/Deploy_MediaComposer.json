@@ -18,7 +18,7 @@
 		"general-VnetName": {
 			"type": "string",
 			"metadata": {
-				"description": "Name of the new or existing Virtual Network (depending on choice above). If you chose Existing above, the name of the Vnet you enter here must match an existing Vnet, or deployment will fail"
+				"description": "Name of the existing Virtual Network."
 			}
 		},
 		"general-NamePrefix": {
@@ -26,35 +26,21 @@
 			"minLength": 3,
 			"maxLength": 7,
 			"metadata": {
-				"description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric. Will also be the name of the Nexis Online Cloud Storage"
+				"description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric."
 			}
 		},
 		"general-VnetResourceGroup": {
 			"type": "string",
 			"metadata": {
-				"description": "Name of the Resource Group where the existing Vnet is deployed. If you chose Existing above, this field must match the name of an existing resource group that contains the Vnet specified in the \"Vnet Name\" field. If you chose New, enter the name of the Resource Group that you're deploying to."
+				"description": "Name of the Resource Group where the existing Vnet is deployed."
 			}
 		},
 		"general-SubnetName": {
 			"type": "string",
 			"metadata": {
-				"description": "If you chose New Vnet above, this will be the name of the new subnet in the new Vnet. If you chose Existing Vnet above, this name should match the existing subnet in that Vnet to which the VMs should be deployed, or deployment will fail"
+				"description": "Existing subnet in where VMs should be deployed"
 			},
 			"defaultValue": "default"
-		},
-		"general-AddressSpace": {
-			"type": "string",
-			"metadata": {
-				"description": "If you chose New Vnet above, this will be the address space for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. If you chose Existing Vnet, you can ignore this field"
-			},
-			"defaultValue": "10.0.0.0/16"
-		},
-		"general-AddressSubnet": {
-			"type": "string",
-			"metadata": {
-				"description": "If you chose New Vnet above, this will be the address subnet for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. It must be within the Address Space you configured above, or deployment will fail. If you chose Existing Vnet, you can ignore this field"
-			},
-			"defaultValue": "10.0.0.0/24"
 		},
 		"mediaComposer-VmSize": {
 			"type": "string",
@@ -75,13 +61,6 @@
 			"metadata": {
 				"description": "Number of MediaComposer VMs to deploy"
 			}
-		},
-		"nexis-AddressStatic": {
-			"type": "string",
-			"metadata": {
-				"description": "(optional) The static private IP address for the SD. If not specified, it will use whatever address assigned by Azure and make that static."
-			},
-			"defaultValue": ""
 		},
 		"system-InstallURL": {
 			"type": "string"
@@ -106,15 +85,110 @@
 	"variables": {
 		"githubBase": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
 		"_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
-		"mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]"
+		"mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]",
+		"networkSecurityGroupName": "[concat(parameters('general-NamePrefix'),'-nsg')]",
+		"networkSecurityGroupRules": [
+			{
+				"name": "RDP",
+				"properties": {
+					"priority": 300,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "3389"
+				}
+			},
+			{
+				"name": "PCoIPtcp",
+				"properties": {
+					"priority": 301,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "4172"
+				}
+			},
+			{
+				"name": "PCoIPudp",
+				"properties": {
+					"priority": 302,
+					"protocol": "UDP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "4172"
+				}
+			},
+			{
+				"name": "certauthhttp",
+				"properties": {
+					"priority": 303,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "80"
+				}
+			},
+			{
+				"name": "certauthhttps",
+				"properties": {
+					"priority": 304,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "443"
+				}
+			},
+			{
+				"name": "Teradici",
+				"properties": {
+					"priority": 305,
+					"protocol": "TCP",
+					"access": "Allow",
+					"direction": "Inbound",
+					"sourceAddressPrefix": "*",
+					"sourcePortRange": "*",
+					"destinationAddressPrefix": "*",
+					"destinationPortRange": "60443"
+				}
+			}
+
+		]
 	},
 	"resources": [
 		{
+			"name": "[concat(variables('networkSecurityGroupName'))]",
+			"type": "Microsoft.Network/networkSecurityGroups",
+			"apiVersion": "2018-08-01",
+			"location": "[resourceGroup().location]",
+			"properties": {
+				"securityRules": "[variables('networkSecurityGroupRules')]"
+			},
+			"tags": {}
+		},
+		{
 			"apiVersion": "2019-07-01",
-			"name": "mediaComposer-template",
+			"name": "[concat(variables('networkSecurityGroupName'))]",
 			"type": "Microsoft.Resources/deployments",
 			"properties": {
 				"mode": "Incremental",
+				"dependsOn": [
+					"vnet-template"
+				],
 				"templateLink": {
 					"uri": "[variables('mediaComposerTemplateLink')]",
 					"contentVersion": "1.0.0.0"
