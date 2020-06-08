@@ -42,20 +42,6 @@
 			},
 			"defaultValue": "default"
 		},
-		"general-AddressSpace": {
-			"type": "string",
-			"metadata": {
-				"description": "If you chose New Vnet above, this will be the address space for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. If you chose Existing Vnet, you can ignore this field"
-			},
-			"defaultValue": "10.0.0.0/16"
-		},
-		"general-AddressSubnet": {
-			"type": "string",
-			"metadata": {
-				"description": "If you chose New Vnet above, this will be the address subnet for the Vnet in the form X.X.X.X/Y, with Y as the subnet mask. It must be within the Address Space you configured above, or deployment will fail. If you chose Existing Vnet, you can ignore this field"
-			},
-			"defaultValue": "10.0.0.0/24"
-		},
 		"system-InstallURL": {
 			"type": "string"
 		},
