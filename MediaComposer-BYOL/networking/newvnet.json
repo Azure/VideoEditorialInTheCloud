@@ -8,9 +8,6 @@
         "description": "VNet name"
       }
     },
-    "vnetResourceGroup": {
-      "type": "string"
-    },
     "subnetName": {
       "type": "string"
     },
@@ -28,100 +25,9 @@
     }
   },
   "variables": {
-    "networkSecurityGroupName": "[concat(parameters('workstationName'),'-nsg')]",
-    "networkSecurityGroupRules": [
-      {
-        "name": "RDP",
-        "properties": {
-          "priority": 300,
-          "protocol": "TCP",
-          "access": "Allow",
-          "direction": "Inbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "3389"
-        }
-      },
-      {
-        "name": "PCoIPtcp",
-        "properties": {
-          "priority": 301,
-          "protocol": "TCP",
-          "access": "Allow",
-          "direction": "Inbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "4172"
-        }
-      },
-      {
-        "name": "PCoIPudp",
-        "properties": {
-          "priority": 302,
-          "protocol": "UDP",
-          "access": "Allow",
-          "direction": "Inbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "4172"
-        }
-      },
-      {
-        "name": "certauthhttp",
-        "properties": {
-          "priority": 303,
-          "protocol": "TCP",
-          "access": "Allow",
-          "direction": "Inbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "80"
-        }
-      },
-      {
-        "name": "certauthhttps",
-        "properties": {
-          "priority": 304,
-          "protocol": "TCP",
-          "access": "Allow",
-          "direction": "Inbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "443"
-        }
-      },
-      {
-        "name": "Teradici",
-        "properties": {
-          "priority": 305,
-          "protocol": "TCP",
-          "access": "Allow",
-          "direction": "Inbound",
-          "sourceAddressPrefix": "*",
-          "sourcePortRange": "*",
-          "destinationAddressPrefix": "*",
-          "destinationPortRange": "60443"
-        }
-      }
-
-    ]
+    "networkSecurityGroupName": "[concat(parameters('workstationName'),'-nsg')]"
   },
   "resources": [
-    {
-      "name": "[concat(variables('networkSecurityGroupName'))]",
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2018-08-01",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "securityRules": "[variables('networkSecurityGroupRules')]"
-      },
-      "tags": {}
-    },
     {
       "apiVersion": "2016-03-30",
       "type": "Microsoft.Network/virtualNetworks",

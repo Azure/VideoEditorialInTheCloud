@@ -7,7 +7,7 @@
 			"minLength": 3,
 			"maxLength": 7,
 			"metadata": {
-				"description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric. Will also be the name of the Nexis Online Cloud Storage"
+				"description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric"
 			}
 		},
 		"general-VnetName": {
