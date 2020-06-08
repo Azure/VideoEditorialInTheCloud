@@ -26,13 +26,13 @@
         "vnetResourceGroup": {
             "type": "string",
             "metadata": {
-                "description": "Name of the Resource Group containing the existing VNet. If deploying a New Vnet, use the name of the Resource Group you're deploying to."
+                "description": "Name of the Resource Group containing the existing VNet."
             }
         },
         "subnetName": {
             "type": "string",
             "metadata": {
-                "description": "Name of the existing subnet name in the Vnet to which the MP VMs should be deployed"
+                "description": "Name of the existing subnet name where Nexis should be deployed"
             },
             "defaultValue": "default"
         }
@@ -51,10 +51,26 @@
     },
     "resources": [
         {
+            "apiVersion": "2019-04-01",
+            "dependsOn": [],
+            "kind": "BlockBlobStorage",
+            "location": "[resourceGroup().location]",
+            "name": "[concat(parameters('systemName'),'nexisonline')]",
+            "properties": {
+                "supportsHttpsTrafficOnly": true
+            },
+            "sku": {
+                "name": "Premium_LRS"
+            },
+            "type": "Microsoft.Storage/storageAccounts"
+        },
+        {
             "name": "[variables('deployNexisCloud')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2015-01-01",
-            "dependsOn": [],
+            "dependsOn": [
+                "[concat(parameters('systemName'),'nexisonline')]"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {

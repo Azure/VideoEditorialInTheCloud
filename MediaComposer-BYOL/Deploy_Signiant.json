@@ -18,7 +18,7 @@
 		"general-VnetName": {
 			"type": "string",
 			"metadata": {
-				"description": "Name of the new or existing Virtual Network (depending on choice above). If you chose Existing above, the name of the Vnet you enter here must match an existing Vnet, or deployment will fail"
+				"description": "Name of the existing Virtual Network"
 			}
 		},
 		"general-NamePrefix": {
@@ -26,19 +26,19 @@
 			"minLength": 3,
 			"maxLength": 7,
 			"metadata": {
-				"description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric. Will also be the name of the Nexis Online Cloud Storage"
+				"description": "System Name prefix for all VM resources created for Cloud Edition. 3-char min, 7-char max, lower case alphanumeric"
 			}
 		},
 		"general-VnetResourceGroup": {
 			"type": "string",
 			"metadata": {
-				"description": "Name of the Resource Group where the existing Vnet is deployed. If you chose Existing above, this field must match the name of an existing resource group that contains the Vnet specified in the \"Vnet Name\" field. If you chose New, enter the name of the Resource Group that you're deploying to."
+				"description": "Name of the Resource Group where the existing Vnet is deployed."
 			}
 		},
 		"general-SubnetName": {
 			"type": "string",
 			"metadata": {
-				"description": "If you chose New Vnet above, this will be the name of the new subnet in the new Vnet. If you chose Existing Vnet above, this name should match the existing subnet in that Vnet to which the VMs should be deployed, or deployment will fail"
+				"description": "Subnet the VMs should be deployed within"
 			},
 			"defaultValue": "default"
 		},
