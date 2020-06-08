@@ -67,7 +67,7 @@
     "vmName": "[concat(variables('uniqueName'), '-vm')]",
     "vmSize": "[parameters('vmSize')]",
     "scriptFolder": ".",
-    "scriptFileName": "setupMediaComposer.ps1",
+    "scriptFileName": "setupMediaComposer_NVIDIA.ps1",
     "mediaComposerFileName": "[parameters('mediaComposerFileName')]",
     "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
     "nvidiaInstallFileName": "[parameters('nvidiaInstallFileName')]",
