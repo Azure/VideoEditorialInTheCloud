@@ -189,14 +189,6 @@
 		"resourceGroupLocation": {
 			"type": "string",
 			"value": "[resourceGroup().location]"
-		},
-		"vnetTemplatelink": {
-			"type": "string",
-			"value": "[variables('vnetTemplatelink')]"
-		},
-		"vnet-template": {
-			"type": "string",
-			"value": "[reference('vnet-template').outputs.subnetRef.value]"
 		}
 	}
 }
