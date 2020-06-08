@@ -17,7 +17,7 @@ param(
     [ValidateNotNullOrEmpty()]
     $TeradiciURL,
     [ValidateNotNullOrEmpty()]
-    $NvidiaURL,
+    $AmdURL,
     [ValidateNotNullOrEmpty()]
     $AvidNEXISClientURL
 )
@@ -186,16 +186,16 @@ Install-NexisClient {
 }
 
 function 
-Install-NvidiaGPU {
+Install-AmdGPU {
     
-    Write-Log "Download Nvidia Tesla Driver"
-    $NvidiaDestinationPath = "D:\AzureData\Nividia.exe"
+    Write-Log "Download Amd Tesla Driver"
+    $AmdDestinationPath = "D:\AzureData\Amd.exe"
 
     Write-Log $DestinationPath
-    DownloadFileOverHttp $NvidiaURL $NvidiaDestinationPath  
+    DownloadFileOverHttp $AmdURL $AmdDestinationPath  
     
-    Write-Log "Install Nvidia"
-    Start-Process -FilePath $NvidiaDestinationPath -ArgumentList "-s", "-noreboot" -Verb RunAs -Wait 
+    Write-Log "Install Amd"
+    Start-Process -FilePath $AmdDestinationPath -ArgumentList "-s", "-noreboot" -Verb RunAs -Wait 
 }
 
 
@@ -220,8 +220,8 @@ try {
         Write-Log "Create Download folder"
         mkdir D:\AzureData
 
-        Write-Log "Call Install-NvidiaGPU"
-        Install-NvidiaGPU
+        Write-Log "Call Install-AmdGPU"
+        Install-AmdGPU
 
         Write-Log "Call Install-Teradici"
         Install-Teradici
