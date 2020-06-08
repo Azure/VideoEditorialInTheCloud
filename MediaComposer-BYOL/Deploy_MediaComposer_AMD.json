@@ -227,7 +227,7 @@
 					"teradiciInstallFileName": {
 						"value": "[parameters('system-TeradiciAgent')]"
 					},
-					"nvidiaInstallFileName": {
+					"amdInstallFileName": {
 						"value": "[parameters('system-AmdDriver')]"
 					},
 					"nexisClientInstallFileName": {
