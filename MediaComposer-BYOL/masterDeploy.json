@@ -227,7 +227,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2/AzureProvisioning/nexis.nearline/nestedtemplates/deploy-nexiscloud.json2",
+					"uri": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2/AzureProvisioning/nexis.nearline/nestedtemplates/deploy-nexiscloud.json",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
