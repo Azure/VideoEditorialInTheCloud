@@ -87,31 +87,31 @@
 					},
 					"parameters": {
 					"vmName": {
-						"value": "[parameters('nexisName')]"
+						"value": "[parameters('_nexisName')]"
 					},
 					"adminUsername": {
 						"value": "[variables('adminUsername')]"
 					},
 					"adminPassword": {
-						"value": "[parameters('adminPassword')]"
+						"value": "[parameters('_adminPassword')]"
 					},
 					"newOrExistingVnet": {
 						"value": "[variables('newOrExistingVnet')]"
 					},
 					"vnetName": {
-						"value": "[parameters('vnetName')]"
+						"value": "[parameters('_vnetName')]"
 					},
 					"vnetResourceGroup": {
-						"value": "[parameters('vnetResourceGroup')]"
+						"value": "[parameters('_vnetResourceGroup')]"
 					},
 					"subnetName": {
-						"value": "[parameters('subnetName')]"
+						"value": "[parameters('_subnetName')]"
 					},
 					"addressSpace": {
-						"value": "[parameters('addressSpace')]"
+						"value": "[parameters('_addressSpace')]"
 					},
 					"addressSubnet": {
-						"value": "[parameters('addressSubnet')]"
+						"value": "[parameters('_addressSubnet')]"
 					},
 					"privateAddressType": {
 						"value": "[variables('privateAddressType')]"
@@ -148,7 +148,7 @@
 			"dependsOn": [],
 			"kind": "BlockBlobStorage",
 			"location": "[resourceGroup().location]",
-			"name": "[concat(parameters('nexisName'),'nexisonline')]",
+			"name": "[concat(parameters('_nexisName'),'nexisonline')]",
 			"properties": {
 				"supportsHttpsTrafficOnly": true
 			},
