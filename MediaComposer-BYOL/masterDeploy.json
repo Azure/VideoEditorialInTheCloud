@@ -124,7 +124,7 @@
 	"variables": {
 		"githubBase": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
 		"_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
-		"vnetTemplatelink2": "[concat(variables('githubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
+		"vnetTemplatelink": "[concat(variables('githubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
 		"mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]",
 		"nexisTemplateLink": "[concat(variables('githubBase'),'/nexiscloud/','deploy-nexiscloud.json')]",
 		"signiantTemplateLink": "[concat(variables('githubBase'),'/signiant/','signiantazuredeploy.json')]"
@@ -137,7 +137,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('vnetTemplatelink2')]",
+					"uri": "[variables('vnetTemplatelink')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -219,33 +219,37 @@
 			}
 		},
 		{
-			"apiVersion": "2015-01-01",
-			"name": "nexis-template",
+			"name": "[variables('deployNexisCloud')]",
 			"type": "Microsoft.Resources/deployments",
-			"dependsOn": [
-				"vnet-template"
-			],
+			"apiVersion": "2015-01-01",
+			"dependsOn": [],
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('nexisTemplateLink')]",
+					"uri": "[variables('deployNexisCloudTemplateURL')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					"nexisName": {
-						"value": "[parameters('general-namePrefix')]"
+					"vmName": {
+						"value": "[parameters('general-NamePrefix')]"
+					},
+					"adminUsername": {
+						"value": "avid"
 					},
 					"adminPassword": {
-						"value": "[parameters('general-adminPassword')]"
+						"value": "Avid1234567$"
+					},
+					"newOrExistingVnet": {
+						"value": "existing"
 					},
 					"vnetName": {
-						"value": "[parameters('general-vnetName')]"
+						"value": "[parameters('general-VnetName')]"
 					},
 					"vnetResourceGroup": {
-						"value": "[parameters('general-vnetResourceGroup')]"
+						"value": "[parameters('general-VnetResourceGroup')]"
 					},
 					"subnetName": {
-						"value": "default"
+						"value": "[parameters('general-SubnetName')]"
 					},
 					"addressSpace": {
 						"value": "10.0.0.0/16"
@@ -253,8 +257,32 @@
 					"addressSubnet": {
 						"value": "10.0.0.0/24"
 					},
-					"_urlLocation": {
-						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
+					"privateAddressType": {
+						"value": "Static"
+					},
+					"addressStatic": {
+						"value": ""
+					},
+					"deployPublicIPs": {
+						"value": "No"
+					},
+					"_artifactsLocation": {
+						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2/AzureProvisioning/nexis.nearline"
+					},
+					"_artifactsLocationSasToken": {
+						"value": ""
+					},
+					"_buildArtifactsLocation": {
+						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2/AzureProvisioning/nexis.nearline/nestedtemplates/deploy-nexiscloud.json"
+					},
+					"_buildArtifactsLocationSasToken": {
+						"value": ""
+					},
+					"nexisBuild": {
+						"value": "AvidNexisCloud_20.3.2-17.run"
+					},
+					"partNumber": {
+						"value": "0100-40109-00"
 					}
 				}
 			}
