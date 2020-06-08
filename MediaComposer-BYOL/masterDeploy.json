@@ -232,11 +232,14 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					"nexisName": {
+					"systemName": {
 						"value": "[parameters('general-namePrefix')]"
 					},
 					"adminPassword": {
 						"value": "[parameters('general-adminPassword')]"
+					},
+					"newOrExistingVnet": {
+						"value": "existing"
 					},
 					"vnetName": {
 						"value": "[parameters('general-vnetName')]"
@@ -253,8 +256,23 @@
 					"addressSubnet": {
 						"value": "10.0.0.0/24"
 					},
+					"staticPrivateIPAddress": {
+						"value": ""
+					},
+					"deployPublicIPs": {
+						"value": "No"
+					},
 					"_urlLocation": {
 						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
+					},
+					"_sasToken": {
+						"value": ""
+					},
+					"nexisBuild": {
+						"value": "AvidNexisCloud_20.3.2-17.run"
+					},
+					"partNumber": {
+						"value": "0100-40109-00"
 					}
 				}
 			}
