@@ -16,12 +16,6 @@
 				"description": "Name of the new or existing Virtual Network (depending on choice above). If you chose Existing above, the name of the Vnet you enter here must match an existing Vnet, or deployment will fail"
 			}
 		},
-		"general-VnetResourceGroup": {
-			"type": "string",
-			"metadata": {
-				"description": "Name of the Resource Group where the existing Vnet is deployed. If you chose Existing above, this field must match the name of an existing resource group that contains the Vnet specified in the \"Vnet Name\" field. If you chose New, enter the name of the Resource Group that you're deploying to."
-			}
-		},
 		"general-SubnetName": {
 			"type": "string",
 			"metadata": {
@@ -63,9 +57,6 @@
 				"parameters": {
 					"virtualNetworkName": {
 						"value": "[parameters('general-vnetName')]"
-					},
-					"vnetResourceGroup": {
-						"value": "[parameters('general-vnetResourceGroup')]"
 					},
 					"subnetName": {
 						"value": "[parameters('general-subnetName')]"
