@@ -86,7 +86,7 @@
 		"githubBase": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
 		"_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
 		"mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]",
-		"networkSecurityGroupName": "[concat(parameters('general-NamePrefix'),'-nsg')]",
+		"networkSecurityGroupName": "[concat(parameters('general-NamePrefix'),'-mc-nsg')]",
 		"networkSecurityGroupRules": [
 			{
 				"name": "RDP",

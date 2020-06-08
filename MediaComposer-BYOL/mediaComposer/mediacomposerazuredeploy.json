@@ -58,7 +58,7 @@
     },
     "location": "[parameters('location')]",
     "uniqueName": "[concat(parameters('workstationName'), '-mc')]",
-    "networkSecurityGroupName": "[concat(parameters('workstationName'),'-nsg')]",
+    "networkSecurityGroupName": "[concat(parameters('workstationName'),'-mc-nsg')]",
     "nicName": "[concat(variables('uniqueName'), '-nic')]",
     "numberOfInstances": "[parameters('numberOfInstances')]",
     "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
