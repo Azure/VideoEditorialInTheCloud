@@ -64,7 +64,7 @@
     },
     "variables": {
         "deployPublicIPs": "No",
-        "_urllocation ": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2",
+        "_urllocation": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2",
         "_artifactsLocation": "[concat(variables('_urlLocation'), '/AzureProvisioning/nexis.nearline')]",
         "_artifactsLocationSasToken": "",
         "_buildArtifactsLocation": "[concat(variables('_urlLocation'), '/installers')]",
