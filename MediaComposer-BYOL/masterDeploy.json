@@ -124,7 +124,7 @@
 	"variables": {
 		"githubBase": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
 		"_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
-		"vnetTemplatelink": "[concat(variables('githubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
+		"vnetTemplatelink2": "[concat(variables('githubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
 		"mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]",
 		"nexisTemplateLink": "[concat(variables('githubBase'),'/nexiscloud/','deploy-nexiscloud.json')]",
 		"signiantTemplateLink": "[concat(variables('githubBase'),'/signiant/','signiantazuredeploy.json')]"
@@ -137,7 +137,7 @@
 			"properties": {
 				"mode": "Incremental",
 				"templateLink": {
-					"uri": "[variables('vnetTemplatelink')]",
+					"uri": "[variables('vnetTemplatelink2')]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -232,14 +232,11 @@
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
-					"systemName": {
+					"nexisName": {
 						"value": "[parameters('general-namePrefix')]"
 					},
 					"adminPassword": {
 						"value": "[parameters('general-adminPassword')]"
-					},
-					"newOrExistingVnet": {
-						"value": "existing"
 					},
 					"vnetName": {
 						"value": "[parameters('general-vnetName')]"
@@ -256,23 +253,8 @@
 					"addressSubnet": {
 						"value": "10.0.0.0/24"
 					},
-					"staticPrivateIPAddress": {
-						"value": ""
-					},
-					"deployPublicIPs": {
-						"value": "No"
-					},
 					"_urlLocation": {
 						"value": "https://ssengreleng.blob.core.windows.net/nexisgold/20.3.2"
-					},
-					"_sasToken": {
-						"value": ""
-					},
-					"nexisBuild": {
-						"value": "AvidNexisCloud_20.3.2-17.run"
-					},
-					"partNumber": {
-						"value": "0100-40109-00"
 					}
 				}
 			}
