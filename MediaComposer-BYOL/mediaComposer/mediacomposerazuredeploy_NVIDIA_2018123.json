@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {
+    "parameters": {
         "workstationName": {
             "type": "string"
         },
@@ -18,10 +18,10 @@
                 "description": "Size of the Media Composer VM."
             },
             "allowedValues": [
-            "Standard_NV12",
-            "Standard_NV12_Promo",
-            "Standard_NV12s_v2",
-            "Standard_NV12s_v3"
+                "Standard_NV12",
+                "Standard_NV12_Promo",
+                "Standard_NV12s_v2",
+                "Standard_NV12s_v3"
             ]
         },
         "numberOfInstances": {
@@ -34,10 +34,7 @@
         "subnetId": {
             "type": "string"
         },
-        "_artifactsLocation": {
-            "type": "string"
-        },
-        "_githubLocation": {
+        "_system-InstallURL": {
             "type": "string"
         },
         "mediaComposerFileName": {
@@ -83,11 +80,12 @@
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
         "nvidiaInstallFileName": "[parameters('nvidiaInstallFileName')]",
         "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
+        "_githubLocation": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
         "scriptLocation": "[concat(parameters('_githubLocation'), '/','scripts')]",
-        "mediaComposerInstallLocation": "[concat(parameters('_artifactsLocation'), '/','installers','/',variables('mediaComposerFileName'))]",
-        "teradiciInstallLocation": "[concat(parameters('_artifactsLocation'), '/','installers','/',variables('teradiciInstallFileName'))]",
-        "nvidiaInstallLocation": "[concat(parameters('_artifactsLocation'), '/','installers','/',variables('nvidiaInstallFileName'))]",
-        "nexisClientInstallLocation": "[concat(parameters('_artifactsLocation'), '/','installers','/',variables('nexisClientInstallFileName'))]",
+        "mediaComposerInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('mediaComposerFileName'))]",
+        "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",
+        "nvidiaInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nvidiaInstallFileName'))]",
+        "nexisClientInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nexisClientInstallFileName'))]",
         "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -NvidiaURL ', variables('nvidiaInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
     },
   "resources": [
