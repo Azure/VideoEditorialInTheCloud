@@ -119,7 +119,7 @@ Install-MediaComposer {
     #Install PACE License Support
     Write-Log "Installing PACE License Support"
     New-Item -ItemType Directory -Force -Path "$PreReqBasePath\pace"
-    $PaceLicenseSupportExe = "$PreReqBasePath\PACE License Support 5.0.3\License Support Win64.exe"
+    $PaceLicenseSupportExe = "$PreReqBasePath\PACE License Support 4.0.3\License Support Win64.exe"
     Start-Process -FilePath $PaceLicenseSupportExe -ArgumentList "/s", "/x", "/b$PreReqBasePath\pace", "/v/qn" -Wait
     Start-Process -FilePath "$PreReqBasePath\pace\PACE License Support Win64.msi" -ArgumentList "/quiet", "/passive", "/norestart" -Wait
 
