@@ -1,4 +1,4 @@
-# Deploy to Azure
+# Deploy to Azuree
 
 
 | Module | Compatible Version | ARM Template link |
