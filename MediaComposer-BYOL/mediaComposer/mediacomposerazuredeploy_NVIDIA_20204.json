@@ -55,7 +55,7 @@
         },
         "mediaComposerFileName": {
             "type": "string",
-            "defaultValue": "Media_Composer_2018.12.3_Win.zip"
+            "defaultValue": "Media_Composer_2020.4._Win.zip"
         },
         "teradiciInstallFileName": {
             "type": "string",
