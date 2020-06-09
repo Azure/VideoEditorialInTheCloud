@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
     "parameters": {
-        "general-NamePrefix": {
+        "general-Name": {
             "type": "string"
         },
         "adminUsername": {
@@ -162,14 +162,14 @@
 
         ],
         "location": "[resourceGroup().location]",
-        "uniqueName": "[concat(parameters('general-NamePrefix'), '-mc')]",
-        "networkSecurityGroupName": "[concat(parameters('general-NamePrefix'),'-mc-nsg')]",
+        "uniqueName": "[parameters('general-Name')]",
+        "networkSecurityGroupName": "[concat(parameters('general-Name'),'-nsg')]",
         "nicName": "[concat(variables('uniqueName'), '-nic')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
         "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
-        "vmName": "[concat(variables('uniqueName'), '-vm')]",
+        "vmName": "[variables('uniqueName')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
         "scriptFileName": "setupMediaComposer_NVIDIA_2018123.ps1",
