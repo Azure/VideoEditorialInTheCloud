@@ -75,7 +75,7 @@
 		},
 		"system-AmdDriver": {
 			"type": "string",
-			"defaultValue": "442.06_grid_win10_64bit_international_whql.exe"
+			"defaultValue": "Radeon-Pro-Software-for-Enterprise-GA.exe"
 		},
 		"system-NexisWindowsClient": {
 			"type": "string",
