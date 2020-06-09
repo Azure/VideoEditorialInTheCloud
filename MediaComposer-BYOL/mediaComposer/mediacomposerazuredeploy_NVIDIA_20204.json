@@ -1,6 +1,6 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
     "parameters": {
         "general-NamePrefix": {
             "type": "string"
@@ -172,7 +172,7 @@
         "vmName": "[concat(variables('uniqueName'), '-vm')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
-        "scriptFileName": "setupMediaComposer_NVIDIA_2018123.ps1",
+        "scriptFileName": "setupMediaComposer_NVIDIA_20204.ps1",
         "mediaComposerFileName": "[parameters('mediaComposerFileName')]",
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
         "nvidiaInstallFileName": "[parameters('nvidiaInstallFileName')]",
@@ -325,18 +325,18 @@
             }
         }
     ],
-  "outputs": {
-    "resource_group": {
-      "type": "string",
-      "value": "[resourceGroup().name]"
-    },
-    "location": {
-      "type": "string",
-      "value": "[variables('location')]"
-    },
-    "subnet_id": {
-      "type": "string",
-      "value": "[variables('subnetId')]"
+    "outputs": {
+        "resource_group": {
+            "type": "string",
+            "value": "[resourceGroup().name]"
+        },
+        "location": {
+            "type": "string",
+            "value": "[variables('location')]"
+        },
+        "subnet_id": {
+            "type": "string",
+            "value": "[variables('subnetId')]"
+        }
     }
-  }
 }
