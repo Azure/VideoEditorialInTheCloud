@@ -2,7 +2,7 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
     "parameters": {
-        "workstationName": {
+        "general-NamePrefix": {
             "type": "string"
         },
         "adminUsername": {
@@ -31,15 +31,31 @@
                 "description": "Number of MediaComposer VMs to deploy"
             }
         },
-        "subnetId": {
-            "type": "string"
+        "general-VnetResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Resource Group where the existing Vnet is deployed."
+            }
+        },
+        "general-VnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the existing Virtual Network."
+            }
+        },
+        "general-SubnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "Existing subnet in where VMs should be deployed"
+            },
+            "defaultValue": "default"
         },
         "_system-InstallURL": {
             "type": "string"
         },
         "mediaComposerFileName": {
             "type": "string",
-            "defaultValue": "Media_Composer_2020.4._Win.zip"
+            "defaultValue": "Media_Composer_2018.12.3_Win.zip"
         },
         "teradiciInstallFileName": {
             "type": "string",
@@ -64,13 +80,94 @@
             "sku": "2016-Datacenter",
             "version": "latest"
         },
+        "networkSecurityGroupRules": [
+            {
+                "name": "RDP",
+                "properties": {
+                    "priority": 300,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "3389"
+                }
+            },
+            {
+                "name": "PCoIPtcp",
+                "properties": {
+                    "priority": 301,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "4172"
+                }
+            },
+            {
+                "name": "PCoIPudp",
+                "properties": {
+                    "priority": 302,
+                    "protocol": "UDP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "4172"
+                }
+            },
+            {
+                "name": "certauthhttp",
+                "properties": {
+                    "priority": 303,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "80"
+                }
+            },
+            {
+                "name": "certauthhttps",
+                "properties": {
+                    "priority": 304,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "443"
+                }
+            },
+            {
+                "name": "Teradici",
+                "properties": {
+                    "priority": 305,
+                    "protocol": "TCP",
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*",
+                    "destinationPortRange": "60443"
+                }
+            }
+
+        ],
         "location": "[resourceGroup().location]",
-        "uniqueName": "[concat(parameters('workstationName'), '-mc')]",
-        "networkSecurityGroupName": "[concat(parameters('workstationName'),'-mc-nsg')]",
+        "uniqueName": "[concat(parameters('general-NamePrefix'), '-mc')]",
+        "networkSecurityGroupName": "[concat(parameters('general-NamePrefix'),'-mc-nsg')]",
         "nicName": "[concat(variables('uniqueName'), '-nic')]",
         "numberOfInstances": "[parameters('numberOfInstances')]",
         "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
-        "subnetId": "[parameters('subnetId')]",
+        "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
         "vmName": "[concat(variables('uniqueName'), '-vm')]",
         "vmSize": "[parameters('vmSize')]",
@@ -81,142 +178,153 @@
         "nvidiaInstallFileName": "[parameters('nvidiaInstallFileName')]",
         "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
         "_githubLocation": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
-        "scriptLocation": "[concat(parameters('_githubLocation'), '/','scripts')]",
+        "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
         "mediaComposerInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('mediaComposerFileName'))]",
         "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",
         "nvidiaInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nvidiaInstallFileName'))]",
         "nexisClientInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('nexisClientInstallFileName'))]",
         "scriptParameters": "[concat('-TeradiciKey ', variables('teradiciKey'),' -MediaComposerURL ', variables('mediaComposerInstallLocation'),' -TeradiciURL ', variables('teradiciInstallLocation'),' -NvidiaURL ', variables('nvidiaInstallLocation'),' -AvidNEXISClientURL ', variables('nexisClientInstallLocation'))]"
     },
-  "resources": [
-    {
-      "apiVersion": "2018-02-01",
-      "name": "pid-bc1e25ec-4990-4a2d-a035-a332bebc3ded",
-      "type": "Microsoft.Resources/deployments",
-      "properties": {
-        "mode": "Incremental",
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "resources": []
-        }
-      }
-    },
-    {
-      "apiVersion": "2017-10-01",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[concat(variables('publicIPAddressName'),padLeft(copyindex(1),2,'0'))]",
-      "location": "[variables('location')]",
-      "copy": {
-        "name": "publicIPLoop",
-        "count": "[variables('numberOfInstances')]"
-      },
-      "properties": {
-        "publicIPAllocationMethod": "Static"
-      }
-    },
-    {
-      "apiVersion": "2017-10-01",
-      "condition": "[variables('createNic?')]",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[concat(variables('nicName'), padLeft(copyindex(1),2,'0'))]",
-      "location": "[variables('location')]",
-      "copy": {
-        "name": "nicLoop",
-        "count": "[variables('numberOfInstances')]"
-      },
-      "dependsOn": [
-        "publicIPLoop"
-      ],
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig",
+    "resources": [
+        {
+            "apiVersion": "2018-02-01",
+            "name": "pid-bc1e25ec-4990-4a2d-a035-a332bebc3ded",
+            "type": "Microsoft.Resources/deployments",
             "properties": {
-              "privateIPAllocationMethod": "Dynamic",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName'), padLeft(copyindex(1),2,'0')))]"
-              },
-              "subnet": {
-                "id": "[variables('subnetId')]"
-              }
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
             }
-          }
-        ],
-        "networkSecurityGroup": {
-          "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', concat(variables('networkSecurityGroupName')))]"
-        }
-      }
-    },
-    {
-      "apiVersion": "2017-12-01",
-      "tags": {
-        "avid": "mediacomposer"
-      },
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('vmName'),  padLeft(copyindex(1),2,'0'))]",
-      "location": "[variables('location')]",
-      "copy": {
-        "name": "virtualMachineLoop",
-        "count": "[variables('numberOfInstances')]"
-      },
-      "dependsOn": [
-        "nicLoop"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('vmSize')]"
         },
-        "osProfile": {
-          "computername": "[concat(variables('vmName'), padLeft(copyindex(1),2,'0'))]",
-          "adminUsername": "[variables('adminUsername')]",
-          "adminPassword": "[variables('adminPassword')]",
-          "windowsConfiguration": {
-            "provisionVmAgent": "true"
-          }
+        {
+            "name": "[concat(variables('networkSecurityGroupName'))]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2018-08-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "securityRules": "[variables('networkSecurityGroupRules')]"
+            },
+            "tags": {}
         },
-        "storageProfile": {
-          "imageReference": "[variables('imageReference')]",
-          "osDisk": {
-            "name": "[concat(variables('uniqueName'), '-os-disk', padLeft(copyindex(1),2,'0'))]",
-            "createOption": "FromImage"
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('nicName'), padLeft(copyindex(1),2,'0')))]"
+        {
+            "apiVersion": "2017-10-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[concat(variables('publicIPAddressName'),padLeft(copyindex(1),2,'0'))]",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "publicIPLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static"
             }
-          ]
+        },
+        {
+            "apiVersion": "2017-10-01",
+            "condition": "[variables('createNic?')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(variables('nicName'), padLeft(copyindex(1),2,'0'))]",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "nicLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "dependsOn": [
+                "publicIPLoop",
+                "[concat(variables('networkSecurityGroupName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName'), padLeft(copyindex(1),2,'0')))]"
+                            },
+                            "subnet": {
+                                "id": "[variables('subnetId')]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', concat(variables('networkSecurityGroupName')))]"
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-12-01",
+            "tags": {
+                "avid": "mediacomposer"
+            },
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[concat(variables('vmName'),  padLeft(copyindex(1),2,'0'))]",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "virtualMachineLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "dependsOn": [
+                "nicLoop"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmSize')]"
+                },
+                "osProfile": {
+                    "computername": "[concat(variables('vmName'), padLeft(copyindex(1),2,'0'))]",
+                    "adminUsername": "[variables('adminUsername')]",
+                    "adminPassword": "[variables('adminPassword')]",
+                    "windowsConfiguration": {
+                        "provisionVmAgent": "true"
+                    }
+                },
+                "storageProfile": {
+                    "imageReference": "[variables('imageReference')]",
+                    "osDisk": {
+                        "name": "[concat(variables('uniqueName'), '-os-disk', padLeft(copyindex(1),2,'0'))]",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(variables('nicName'), padLeft(copyindex(1),2,'0')))]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/create.avid.mediacomposer.v0.3.0')]",
+            "apiVersion": "2017-12-01",
+            "location": "[variables('location')]",
+            "copy": {
+                "name": "extensionLoop",
+                "count": "[variables('numberOfInstances')]"
+            },
+            "dependsOn": [
+                "virtualMachineLoop"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.9",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
+                    ],
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+                }
+            }
         }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/create.avid.mediacomposer.v0.3.0')]",
-      "apiVersion": "2017-12-01",
-      "location": "[variables('location')]",
-      "copy": {
-        "name": "extensionLoop",
-        "count": "[variables('numberOfInstances')]"
-      },
-      "dependsOn": [
-        "virtualMachineLoop"
-      ],
-      "properties": {
-        "publisher": "Microsoft.Compute",
-        "type": "CustomScriptExtension",
-        "typeHandlerVersion": "1.9",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-          "fileUris": [
-            "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
-          ],
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
-        }
-      }
-    }
-  ],
+    ],
   "outputs": {
     "resource_group": {
       "type": "string",
