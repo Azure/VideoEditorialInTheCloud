@@ -141,7 +141,7 @@
                 }
             },
             {
-                "name": "Allow-TCP-49221-In",
+                "name": "FileCatalyst-Admin",
                 "properties": {
                     "priority": 215,
                     "protocol": "TCP",
@@ -150,50 +150,24 @@
                     "sourceAddressPrefix": "*",
                     "sourcePortRange": "*",
                     "destinationAddressPrefix": "*",
-                    "destinationPortRange": "49221"
+                    "destinationPortRange": "12400"
                 }
             },
             {
-                "name": "Allow-TCP-49221-Out",
+                "name": "FileCatalyst-Data-Port",
                 "properties": {
-                    "priority": 220,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Outbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "49221"
-                }
-            },
-            {
-                "name": "Shuttle-UDP",
-                "properties": {
-                    "priority": 300,
-                    "protocol": "UDP",
+                    "priority": 240,
+                    "protocol": "*",
                     "access": "Allow",
                     "direction": "Inbound",
                     "sourceAddressPrefix": "*",
                     "sourcePortRange": "*",
                     "destinationAddressPrefix": "*",
-                    "destinationPortRange": "49221-49321"
+                    "destinationPortRange": "8000-8999"
                 }
             },
             {
-                "name": "Allow-TCP-49321-In",
-                "properties": {
-                    "priority": 230,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Inbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "49321"
-                }
-            },
-            {
-                "name": "Allow-TCP-49321-Out",
+                "name": "FileCatalyst-Web-Admin",
                 "properties": {
                     "priority": 250,
                     "protocol": "TCP",
@@ -202,46 +176,20 @@
                     "sourceAddressPrefix": "*",
                     "sourcePortRange": "*",
                     "destinationAddressPrefix": "*",
-                    "destinationPortRange": "49321"
+                    "destinationPortRange": "12480"
                 }
             },
             {
-                "name": "Allow-TCP-50221-In",
+                "name": "FileCatalyst-Central-Port",
                 "properties": {
-                    "priority": 235,
+                    "priority": 260,
                     "protocol": "TCP",
                     "access": "Allow",
                     "direction": "Inbound",
                     "sourceAddressPrefix": "*",
                     "sourcePortRange": "*",
                     "destinationAddressPrefix": "*",
-                    "destinationPortRange": "50221"
-                }
-            },
-            {
-                "name": "Allow-TCP-50221-Out",
-                "properties": {
-                    "priority": 240,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Outbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "50221"
-                }
-            },
-            {
-                "name": "Allow-TCP-443-Out",
-                "properties": {
-                    "priority": 245,
-                    "protocol": "TCP",
-                    "access": "Allow",
-                    "direction": "Outbound",
-                    "sourceAddressPrefix": "*",
-                    "sourcePortRange": "*",
-                    "destinationAddressPrefix": "*",
-                    "destinationPortRange": "443"
+                    "destinationPortRange": "12500"
                 }
             }
         ]
