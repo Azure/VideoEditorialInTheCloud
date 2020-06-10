@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\MediaComposer-BYOL",
+    "\\MediaComposer-BYOL\\Archive",
     "\\MediaComposer-BYOL\\bin",
     "\\MediaComposer-BYOL\\mediaComposer",
     "\\MediaComposer-BYOL\\networking",
@@ -9,5 +10,6 @@
     "\\MediaComposer-BYOL\\scripts",
     "\\MediaComposer-BYOL\\signiant"
   ],
+  "SelectedNode": "\\MediaComposer-BYOL\\README_modules.md",
   "PreviewInSolutionExplorer": false
 }
