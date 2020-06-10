@@ -52,6 +52,9 @@ Install-ChocolatyAndPackages {
     Write-Log "choco Install Google Chrome"
     choco install -y googlechrome -ignore-checksum
 
+    Write-Log "choco install -y 7zip.install"
+    choco install -y 7zip.install
+
 }
 
 function 
