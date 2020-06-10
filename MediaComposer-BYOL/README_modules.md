@@ -1,4 +1,4 @@
-# Deploy to Azure
+# Deploy to MSFT Azure
 
 
 | Module | Compatible Version | ARM Template link |
