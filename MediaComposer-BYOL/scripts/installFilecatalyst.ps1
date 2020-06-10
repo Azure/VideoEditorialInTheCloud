@@ -61,7 +61,7 @@ Install-FileCatalyst {
     $FileCatalystDestinationPath = "C:\Users\Public\Desktop\Install_FileCatalyst.exe"
 
     Write-Log $FileCatalystDestinationPath
-    DownloadFileOverHttp $FileCatalystMediaShuttleURL $FileCatalystDestinationPath
+    DownloadFileOverHttp $FileCatalystURL $FileCatalystDestinationPath
 
 }
 
