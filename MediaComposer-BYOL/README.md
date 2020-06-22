@@ -10,7 +10,7 @@
 
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Vnet | n/a | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2FDeploy_Vnet.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Vnet | n/a | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2Fnetworking%2Fnewvnet.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 
 <br />
 

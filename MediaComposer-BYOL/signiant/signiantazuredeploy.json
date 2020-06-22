@@ -44,17 +44,17 @@
         },
     "signiantInstallName": {
       "type": "string",
+      "defaultValue": "Install_Signiant_SDCX_Server_v3.3.2.exe",
       "metadata": {
         "description": "Signiant Install File Name"
-      },
-      "defaultValue": "Install_Signiant_SDCX_Server_v3.3.2.exe"
+      }
     },
     "avidNexisClientInstallName": {
       "type": "string",
+      "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi",
       "metadata": {
         "description": "Avid Nexis Client Install Name"
-      },
-      "defaultValue": "AvidNEXISClient_Win64_20.3.1.14.msi"
+      }
     }
   },
   "variables": {

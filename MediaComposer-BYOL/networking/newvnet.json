@@ -9,29 +9,24 @@
       }
     },
     "subnetName": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "default"
     },
     "addressSpace": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "10.0.0.0/16"
     },
     "addressSubnet": {
-      "type": "string"
-    },
-    "workstationName": {
       "type": "string",
-      "metadata": {
-        "description": "Workstation name must be 3-char min, 8-char max, lowercase alphanumeric"
-      }
+      "defaultValue": "10.0.0.0/24"
     }
   },
-  "variables": {
-    "networkSecurityGroupName": "[concat(parameters('workstationName'),'-nsg')]"
-  },
+  "variables": {},
   "resources": [
     {
       "apiVersion": "2016-03-30",
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[parameters('virtualNetworkName')]",
+      "name": "[concat(parameters('virtualNetworkName'),'-vnet-01')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "addressSpace": {
