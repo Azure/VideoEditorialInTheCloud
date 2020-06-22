@@ -20,7 +20,7 @@
 
 | Module | Compatible Version | ARM Template link |
 | ------ | ------------------ | ----------------- |
-| Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2FDeploy_Signiant.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
+| Signiant 3.3.2 + Nexis 20.3.1.14 (Client) | - Install_Signiant_SDCX_Server_v3.3.2.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2Fsigniant%2Fsigniantazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 | FileCatalyst 3.7.3b38 + Nexis 20.3.1.14 (Client) | - install_fc_server.exe <br /> - AvidNEXISClient_Win64_20.3.1.14.msi | <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2Ffilecatalyst%2Ffilecatalystazuredeploy.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a> |
 | Aspera + Nexis 20.3.1.14 (Client) | - AvidNEXISClient_Win64_20.3.1.14.msi | (Coming soon) |
 
