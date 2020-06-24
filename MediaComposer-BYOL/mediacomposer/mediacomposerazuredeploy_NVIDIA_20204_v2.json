@@ -92,7 +92,6 @@
         "adminPassword": "[parameters('adminPassword')]",
         "adminUsername": "[parameters('adminUsername')]",
         "createNic?": true,
-        "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
         "osType_Windows_10": {
             "publisher": "MicrosoftWindowsDesktop",
             "offer": "Windows-10",
@@ -111,10 +110,11 @@
             "sku": "2019-Datacenter",
             "version": "latest"
         },
-        "scriptFileName": "[variables(concat('mcVersion_',parameters('mediaComposerVersion')))]",
+        "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
         "mcVersion_2018_12_3": "setupMediaComposer_NVIDIA_2018123.ps1",
         "mcVersion_2019_12": "setupMediaComposer_NVIDIA_20204.ps1",
         "mcVersion_2020_4": "setupMediaComposer_NVIDIA_20204.ps1",
+        "scriptFileName": "[variables(concat('mcVersion_',parameters('mediaComposerVersion')))]",
         "networkSecurityGroupRules": [
             {
                 "name": "RDP",
@@ -207,7 +207,6 @@
         "vmName": "[variables('uniqueName')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
-        
         "mediaComposerFileName": "[parameters('mediaComposerFileName')]",
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
         "nvidiaInstallFileName": "[parameters('nvidiaInstallFileName')]",
