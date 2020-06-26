@@ -69,7 +69,7 @@
         "mediaComposerVersion": {
             "type": "string",
             "allowedValues": [
-                "2018_12_3",
+                "2018_12_11",
                 "2019_12",
                 "2020_4"
             ],
@@ -111,7 +111,7 @@
             "version": "latest"
         },
         "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
-        "mcVersion_2018_12_3": "setupMediaComposer_NVIDIA_2018123.ps1",
+        "mcVersion_2018_12_11": "setupMediaComposer_NVIDIA_20181211.ps1",
         "mcVersion_2019_12": "setupMediaComposer_NVIDIA_20204.ps1",
         "mcVersion_2020_4": "setupMediaComposer_NVIDIA_20204.ps1",
         "scriptFileName": "[variables(concat('mcVersion_',parameters('mediaComposerVersion')))]",
