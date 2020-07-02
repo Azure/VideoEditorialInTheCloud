@@ -192,10 +192,9 @@ try {
     # the output.
     if ($true) 
     {
-
-        Write-Log "Create Download folder"
-        mkdir D:\AzureData
-
+        Write-Log("clean-up windows apps")
+        Remove-WindowsApps $UserName
+        
         try {
             Write-Log "Installing chocolaty and packages"
             Install-ChocolatyAndPackages
@@ -204,6 +203,9 @@ try {
             # chocolaty is best effort
         }   
 
+        Write-Log "Create Download folder"
+        mkdir D:\AzureData
+        
         Write-Log "Call Install-NvidiaGPU"
         Install-NvidiaGPU
 
