@@ -192,8 +192,6 @@ try {
     # the output.
     if ($true) 
     {
-        Write-Log("clean-up windows apps")
-        Remove-WindowsApps $UserName
 
         try {
             Write-Log "Installing chocolaty and packages"
