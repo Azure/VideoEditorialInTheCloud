@@ -11,7 +11,7 @@ provider "azurerm" {
   #tenant_id       = var.tenant_id
   features {}
   version         = "~>2.6"
-  partner_id      = "6ae4d712-3974-76c4-96de-50fc79fa69fc"
+  #partner_id      = "6ae4d712-3974-76c4-96de-50fc79fa69fc"
 }
 
 provider "random" {
@@ -41,12 +41,12 @@ locals {
   
   jump_box_vm_size                  = "Standard_B2ms"
   jump_box_base_index               = 0
-  jump_box_vm_instances             = 0
-  jump_box_vm_number_public_ip      = 0
+  jump_box_vm_instances             = 1
+  jump_box_vm_number_public_ip      = 1
  
   mediacomposer_vm_size             = "Standard_NV12"
   mediacomposer_base_index          = 0
-  mediacomposer_vm_instances        = 0
+  mediacomposer_vm_instances        = 1
   mediacomposer_vm_number_public_ip = 0
 
   nexis_vm_size                     = "Standard_DS4_V2"
@@ -66,7 +66,7 @@ locals {
 module "editorial_networking" {
   source              = "./modules/azurenetwork"
   vnet_name           = "${local.resource_group_name}-vnet" 
-  resource_group_name = "${local.resource_group_name}-${random_string.general.result}-rg" 
+  resource_group_name = "${local.resource_group_name}-rg" 
   location            = local.location
   address_space       = local.address_space
   dns_servers         = local.dns_servers

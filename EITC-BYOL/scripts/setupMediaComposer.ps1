@@ -22,12 +22,6 @@ param(
     $AvidNEXISClientURL
 )
 
-# the windows packages we want to remove
-$global:AppxPkgs = @(
-    "*windowscommunicationsapps*"
-    "*windowsstore*"
-)
-
 filter Timestamp {"$(Get-Date -Format o): $_"}
 
 function
@@ -55,31 +49,9 @@ DownloadFileOverHttp($Url, $DestinationPath) {
 }
 
 function
-Remove-WindowsApps($UserPath) {
-    ForEach ($app in $global:AppxPkgs) {
-        Get-AppxPackage -Name $app | Remove-AppxPackage -ErrorAction SilentlyContinue
-    }
-    try {
-        ForEach ($app in $global:AppxPkgs) {
-            Get-AppxPackage -Name $app | Remove-AppxPackage -User $UserPath -ErrorAction SilentlyContinue
-        }
-    }
-    catch {
-        # the user may not be created yet, but in case it is we want to remove the app
-    }
-    
-    #Remove-Item "c:\Users\Public\Desktop\Short_survey_to_provide_input_on_this_VM..url"
-}
-
-function
 Install-ChocolatyAndPackages {
     
-    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-           
-    Write-Log "choco Install Quicktime"
-    choco install -y quicktime
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
     Write-Log "choco install -y 7zip.install"
     choco install -y 7zip.install
@@ -89,7 +61,7 @@ Install-ChocolatyAndPackages {
     choco install -y vcredist2012
     choco install -y vcredist2013
     choco install -y vcredist2017
-    
+
     Write-Log "choco Install Google Chrome"
     choco install -y googlechrome -ignore-checksum
 
@@ -99,6 +71,18 @@ Install-ChocolatyAndPackages {
 
     Write-Log "Disable ServerManager on Windows Server"
     Get-ScheduledTask -TaskName ServerManager | Disable-ScheduledTask -Verbose
+
+    # Manually Download and Install Quicktime
+    Write-Log "Install Quicktime"
+    $QuicktimeURL = "https://secure-appldnld.apple.com/QuickTime/031-43075-20160107-C0844134-B3CD-11E5-B1C0-43CA8D551951/QuickTimeInstaller.exe"
+    DownloadFileOverHttp $QuicktimeURL "D:\AzureData\QuicktimeInstaller.exe"
+
+    $msiexecPath = "C:\Windows\System32\msiexec.exe"
+    Start-Process "D:\AzureData\QuicktimeInstaller.exe" -ArgumentList "/extract", "D:\AzureData" -Wait
+    Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleSoftwareUpdate.msi", "/passive", "/quiet", "/norestart" -Wait
+    Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\AppleApplicationSupport.msi", "/passive", "/quiet", "/norestart" -Wait
+    Start-Process $msiexecPath -ArgumentList "/i", "D:\AzureData\Quicktime.msi", "/quiet", "/passive", "/norestart", "/L*V D:/AzureData/qt_install.log" -Wait
+
 }
 
 function
@@ -121,7 +105,7 @@ Install-MediaComposer {
     #Install PACE License Support
     Write-Log "Installing PACE License Support"
     New-Item -ItemType Directory -Force -Path "$PreReqBasePath\pace"
-    $PaceLicenseSupportExe = "$PreReqBasePath\PACE License Support 5.0.3\License Support Win64.exe"
+    $PaceLicenseSupportExe = "$PreReqBasePath\PACE License Support 4.0.3\License Support Win64.exe"
     Start-Process -FilePath $PaceLicenseSupportExe -ArgumentList "/s", "/x", "/b$PreReqBasePath\pace", "/v/qn" -Wait
     Start-Process -FilePath "$PreReqBasePath\pace\PACE License Support Win64.msi" -ArgumentList "/quiet", "/passive", "/norestart" -Wait
 
@@ -152,16 +136,17 @@ Install-MediaComposer {
 function
 Install-Teradici {
     
-    Set-Location -Path "C:\AzureData"
+    Set-Location -Path "D:\AzureData"
         
     Write-Log "Downloading Teradici"
-    $TeradiciDestinationPath = "D:\AzureData\PCoIP_agent_release_installer_graphic.exe"
+    $TeradiciDestinationPath = "C:\Users\Public\Desktop\PCoIP_agent_release_installer_graphic.exe"
+
 
     Write-Log $DestinationPath
     DownloadFileOverHttp $TeradiciURL $TeradiciDestinationPath   
     
-    Write-Log "Install Teradici"
-    Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/nopostreboot" -Verb RunAs -Wait
+    #Write-Log "Install Teradici"
+    #Start-Process -FilePath $TeradiciDestinationPath -ArgumentList "/S", "/NoPostReboot" -Verb RunAs -Wait
     
     #cd "C:\Program Files (x86)\Teradici\PCoIP Agent"
 
@@ -207,8 +192,6 @@ try {
     # the output.
     if ($true) 
     {
-        Write-Log("clean-up windows apps")
-        Remove-WindowsApps $UserName
 
         try {
             Write-Log "Installing chocolaty and packages"
@@ -233,8 +216,8 @@ try {
         Write-Log "Call Install-MediaComposer"
         Install-MediaComposer
 
-        Write-Log "Cleanup"
-        Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue
+       # Write-Log "Cleanup"
+       # Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue
         
         Write-Log "Complete"
 
