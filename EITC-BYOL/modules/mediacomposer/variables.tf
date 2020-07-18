@@ -75,11 +75,11 @@ resource "random_string" "mediacomposer" {
 #########################
 variable "software_install_urls" {
   default ={
-    "mediacomposer_vm_script_url"   = "https://raw.githubusercontent.com/Azure/VideoEditorialInTheCloud/master/EITC-BYOL/scripts/setupMediaComposer.ps1"
-    "avid_nexis_client_url"         = "https://editorialbyol.blob.core.windows.net/installers/AvidNEXISClient_Win64_19.12.1.9.msi"
-    "mediaComposer_url"             = "https://editorialbyol.blob.core.windows.net/installers/Media_Composer_2019.12_Win.zip"
-    "teradici_url"                  = "https://editorialbyol.blob.core.windows.net/installers/PCoIP_agent_release_installer_2.11.0.9616_graphics.exe"
-    "nvidia_url"                    = "https://editorialbyol.blob.core.windows.net/installers/442.06_grid_win10_64bit_international_whql.exe"
+    "mediacomposer_vm_script_url"   = "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL/scripts/setupMediaComposer_NVIDIA_20204.ps1"
+    "avid_nexis_client_url"         = "https://eitcstorage.blob.core.windows.net/installers/AvidNEXIS_20.5.0_Client.zip"
+    "mediaComposer_url"             = "https://eitcstorage.blob.core.windows.net/installers/Media_Composer_2020.4._Win.zip"
+    "teradici_url"                  = "https://eitcstorage.blob.core.windows.net/installers/pcoip-agent-graphics_20.04.0.exe"
+    "nvidia_url"                    = "https://eitcstorage.blob.core.windows.net/installers/442.06_grid_win10_64bit_international_whql.exe"
     "teradici_key"                  = "No_Key"
   }
 }

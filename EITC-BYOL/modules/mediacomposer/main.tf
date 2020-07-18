@@ -19,7 +19,7 @@ module "media_composer" {
   admin_username                  = var.admin_username
   base_index                      = var.base_index
   proximity_placement_group_id    = var.proximity_placement_group_id 
-  vm_os_simple                    = "WindowsServer"
+  vm_os_simple                    = "Desktop"
   storage_account_type            = "Standard_LRS"
   nb_public_ip                    = var.mediacomposer_vm_number_public_ip
   remote_port                     = var.mediacomposer_vm_remote_port
@@ -51,7 +51,7 @@ resource "azurerm_virtual_machine_extension" "media_composer" {
 SETTINGS
   protected_settings = <<PROTECTED_SETTINGS
     {
-      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupMediaComposer.ps1 ${local.teradici_key} ${local.mediaComposer_url} ${local.teradici_url} ${local.nvidia_url} ${local.avid_nexis_client_url}"
+      "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File setupMediaComposer_NVIDIA_20204.ps1 ${local.teradici_key} ${local.mediaComposer_url} ${local.teradici_url} ${local.nvidia_url} ${local.avid_nexis_client_url}"
     }
   PROTECTED_SETTINGS
 }

@@ -41,17 +41,17 @@ locals {
   
   jump_box_vm_size                  = "Standard_B2ms"
   jump_box_base_index               = 0
-  jump_box_vm_instances             = 1
-  jump_box_vm_number_public_ip      = 1
- 
+  jump_box_vm_instances             = 0
+  jump_box_vm_number_public_ip      = 0
+
   mediacomposer_vm_size             = "Standard_NV12"
   mediacomposer_base_index          = 0
-  mediacomposer_vm_instances        = 1
+  mediacomposer_vm_instances        = 0
   mediacomposer_vm_number_public_ip = 0
 
   nexis_vm_size                     = "Standard_DS4_V2"
   nexis_base_index                  = 0
-  nexis_instances                   = 1
+  nexis_instances                   = 0
   nexis_storage_vm_number_public_ip = 0
   nexis_type                        = "CloudNearline" # options "CloudNearline" or "CloudOnline"
    
