@@ -25,11 +25,7 @@
             ]
         },
         "numberOfInstances": {
-            "type": "int",
-            "defaultValue": 1,
-            "metadata": {
-                "description": "Number of MediaComposer VMs to deploy"
-            }
+            "type": "int"
         },
         "general-VnetResourceGroup": {
             "type": "string",

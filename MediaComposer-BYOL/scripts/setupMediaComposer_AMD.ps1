@@ -17,8 +17,6 @@ param(
     [ValidateNotNullOrEmpty()]
     $TeradiciURL,
     [ValidateNotNullOrEmpty()]
-    $AmdURL,
-    [ValidateNotNullOrEmpty()]
     $AvidNEXISClientURL
 )
 
@@ -185,20 +183,6 @@ Install-NexisClient {
     
 }
 
-function 
-Install-AmdGPU {
-    
-    Write-Log "Download Amd Tesla Driver"
-    $AmdDestinationPath = "D:\AzureData\Amd.exe"
-
-    Write-Log $DestinationPath
-    DownloadFileOverHttp $AmdURL $AmdDestinationPath  
-    
-    Write-Log "Install Amd"
-    Start-Process -FilePath $AmdDestinationPath -ArgumentList "-s", "-noreboot" -Verb RunAs -Wait 
-}
-
-
 try {
     # Set to false for debugging.  This will output the start script to
     # c:\AzureData\CustomDataSetupScript.log, and then you can RDP
@@ -219,9 +203,6 @@ try {
 
         Write-Log "Create Download folder"
         mkdir D:\AzureData
-
-        Write-Log "Call Install-AmdGPU"
-        Install-AmdGPU
 
         Write-Log "Call Install-Teradici"
         Install-Teradici
