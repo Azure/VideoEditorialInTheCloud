@@ -90,22 +90,19 @@
             "sku": "rs5-pro",
             "version": "latest"
         },
-        "osType_Windows_Server_2016": {
+    "osType_Windows_Server_2016": {
             "publisher": "MicrosoftWindowsServer",
             "offer": "WindowsServer",
             "sku": "2016-Datacenter",
             "version": "latest"
         },
-        "osType_Windows_Server_2019": {
+    "osType_Windows_Server_2019": {
             "publisher": "MicrosoftWindowsServer",
             "offer": "WindowsServer",
             "sku": "2019-Datacenter",
             "version": "latest"
         },
         "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
-        "mcVersion_2018_12_11": "setupMediaComposer_NVIDIA_20181211.ps1",
-        "mcVersion_2019_12": "setupMediaComposer_NVIDIA_20204.ps1",
-        "mcVersion_2020_4": "setupMediaComposer_NVIDIA_20204.ps1",
         "scriptFileName": "setupMediaComposer_AMD.ps1",
         "networkSecurityGroupRules": [
             {
@@ -325,8 +322,8 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/amdgpu')]",
-      "apiVersion": "2015-06-15",
+      "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/create.avid.mediacomposer.v0.3.0')]",
+      "apiVersion": "2017-12-01",
       "location": "[variables('location')]",
       "copy": {
         "name": "extensionLoop1",
@@ -334,28 +331,6 @@
       },
       "dependsOn": [
         "virtualMachineLoop"
-      ],
-      "properties": {
-        "publisher": "Microsoft.HpcCompute",
-        "type": "AmdGpuDriverWindows",
-        "typeHandlerVersion": "1.0",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/create.avid.mediacomposer.v0.3.0')]",
-      "apiVersion": "2017-12-01",
-      "location": "[variables('location')]",
-      "copy": {
-        "name": "extensionLoop",
-        "count": "[variables('numberOfInstances')]"
-      },
-      "dependsOn": [
-        "virtualMachineLoop",
-        "extensionLoop1"
       ],
       "properties": {
         "publisher": "Microsoft.Compute",
@@ -367,6 +342,27 @@
             "[concat(variables('scriptLocation'), '/',variables('scriptFileName'))]"
           ],
           "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('scriptFolder'), '/', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(concat(variables('vmName'),  padLeft(copyindex(1),2,'0')),'/install.amdgpu.v0')]",
+      "apiVersion": "2015-06-15",
+      "location": "[variables('location')]",
+      "copy": {
+        "name": "extensionLoop2",
+        "count": "[variables('numberOfInstances')]"
+      },
+      "dependsOn": [
+        "extensionLoop1"
+      ],
+      "properties": {
+        "publisher": "Microsoft.HpcCompute",
+        "type": "AmdGpuDriverWindows",
+        "typeHandlerVersion": "1.0",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
         }
       }
     }

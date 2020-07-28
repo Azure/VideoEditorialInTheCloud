@@ -217,9 +217,7 @@ try {
         Remove-Item D:\AzureData -Force  -Recurse -ErrorAction SilentlyContinue
         
         Write-Log "Complete"
-
-        Write-Log "Restart Computer"
-        Restart-Computer 
+ 
     }
     else {
         # keep for debugging purposes
