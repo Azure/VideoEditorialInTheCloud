@@ -200,7 +200,7 @@
         "publicIPAddressName": "[concat(variables('uniqueName'), '-ip')]",
         "subnetId": "[concat(resourceId(parameters('general-VnetResourceGroup'), 'Microsoft.Network/virtualNetworks/', parameters('general-VnetName')), '/subnets/',parameters('general-SubnetName'))]",
         "teradiciKey": "null",
-        "vmName": "[variables('uniqueName')]",
+        "vmName": "[concat(variables('uniqueName'),'-')]",
         "vmSize": "[parameters('vmSize')]",
         "scriptFolder": ".",
         "mediaComposerFileName": "[parameters('mediaComposerFileName')]",
