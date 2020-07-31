@@ -103,7 +103,10 @@
             "version": "latest"
         },
         "osType": "[variables(concat('osType_',parameters('mediaComposerOS')))]",
-        "scriptFileName": "setupMediaComposer_AMD.ps1",
+        "mcVersion_2018_12_11": "setupMediaComposer_AMD_20181211.ps1",
+        "mcVersion_2019_12": "setupMediaComposer_AMD_20204.ps1",
+        "mcVersion_2020_4": "setupMediaComposer_AMD_20204.ps1",
+        "scriptFileName": "[variables(concat('mcVersion_',parameters('mediaComposerVersion')))]",
         "networkSecurityGroupRules": [
             {
                 "name": "RDP",
