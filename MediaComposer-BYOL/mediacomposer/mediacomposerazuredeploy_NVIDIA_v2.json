@@ -73,7 +73,7 @@
         },
         "teradiciInstallFileName": {
             "type": "string",
-            "defaultValue": "pcoip-agent-graphics_20.04.0.exe"
+            "defaultValue": "pcoip-agent-graphics_20.07.0.exe"
         },
         "nvidiaInstallFileName": {
             "type": "string",
