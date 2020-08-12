@@ -139,7 +139,7 @@
                     ]
                 },
                 "protectedsettings": {
-                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./scripts/clone-post-config.ps1 -RegistrationCode ', parameters('teradiciRegistrationCode'))]"
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./clone-post-config.ps1 -RegistrationCode ', parameters('teradiciRegistrationCode'))]"
                 }
             },
             "copy": {
