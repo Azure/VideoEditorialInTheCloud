@@ -61,6 +61,12 @@ Back up your video content to Nexis on Azure.
 
 <br />
 
+To duplicate the VM, deploy the following ARM template: 
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fbenjamin-ghis%2FVideoEditorialInTheCloud%2Fmaster%2FMediaComposer-BYOL%2Fmediacomposer%2Fmediacomposercloning.json" target="_blank"><img src="https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.png" /></a>
+
+<br />
+
 5) Deploy a Nexis storage module.
 
 <br />
