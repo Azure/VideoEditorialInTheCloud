@@ -1,0 +1,152 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachineName": {
+            "defaultValue": "test-edit-",
+            "type": "String"
+        },
+        "vmSize": {
+            "defaultValue": "Standard_NV12s_v3",
+            "type": "String"
+        },
+        "numberOfInstances": {
+            "defaultValue": 10,
+            "minValue": 1,
+            "maxValue": 65,
+            "type": "Int",
+            "metadata": {
+                "description": "Number of VMs to deploy."
+            }
+        },
+        "startNumberingAt": {
+            "defaultValue": 1,
+            "type": "Int",
+            "metadata": {
+                "description": "Start numbering VMs from here."
+            }
+        },
+        "suffixLength": {
+            "defaultValue": 3,
+            "type": "Int",
+            "metadata": {
+                "description": "Number of digits to append to vmname (NOTE: VM names must be less than 15 characters)."
+            }
+        },
+        "virtualNetworkName": {
+            "defaultValue": "test-vnet",
+            "type": "String",
+            "metadata": {
+                "description": "Name of an existing vNet for the VMs."
+            }
+        },
+        "subnetName": {
+            "defaultValue": "default",
+            "type": "String",
+            "metadata": {
+                "description": "Name of an existing subnet to attach to the VMs."
+            }
+        },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String",
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        }
+    },
+    "variables": {
+        "subnet1Ref": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('virtualNetworkName'),parameters('subnetName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2016-03-30",
+            "name": "[concat(parameters('virtualMachineName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'),'-nic')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('subnet1Ref')]"
+                            }
+                        }
+                    }
+                ]
+            },
+            "copy": {
+                "name": "nicLoop",
+                "count": "[parameters('numberOfInstances')]"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2016-04-30-preview",
+            "name": "[concat(parameters('virtualMachineName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "nicLoop"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS",
+                            "id": "[resourceId('Microsoft.Compute/disks/',concat(parameters('virtualMachineName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'),'-osdisk'))]"
+                        },
+                        "osType": "Windows",
+                        "createOption": "Attach",
+                        "name": "[concat(parameters('virtualMachineName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'),'-osdisk')]"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('virtualMachineName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'),'-nic'))]"
+                        }
+                    ]
+                }
+            },
+            "copy": {
+                "name": "virtualMachineLoop",
+                "count": "[parameters('numberOfInstances')]"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2018-06-01",
+            "name": "[concat(parameters('virtualMachineName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'),'/config-teradici-1')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "virtualMachineLoop"
+            ],
+            "tags": {
+                "displayName": "config-teradici-1"
+            },
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.10",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "https://aviddeploymentscripts.blob.core.windows.net/vm-cloning/VM-Cloning_files/clone-post-config.ps1"
+                    ]
+                },
+                "protectedsettings": {
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./VM-Cloning_files/clone-post-config.ps1 -RegistrationCode ', parameters('teradiciRegistrationCode'))]"
+                }
+            },
+            "copy": {
+                "name": "runExtension",
+                "count": "[parameters('numberOfInstances')]"
+            }
+        }
+    ]
+}
