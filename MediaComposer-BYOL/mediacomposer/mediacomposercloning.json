@@ -40,18 +40,17 @@
                 "description": "Name of an existing vNet for the VMs."
             }
         },
+        "teradiciRegistrationCode": {
+            "type": "String",
+            "metadata": {
+                "description": "Teradici Registration Code to license the PCoIP Graphics Agent."
+            }
+        },
         "subnetName": {
             "defaultValue": "default",
             "type": "String",
             "metadata": {
                 "description": "Name of an existing subnet to attach to the VMs."
-            }
-        },
-        "location": {
-            "defaultValue": "[resourceGroup().location]",
-            "type": "String",
-            "metadata": {
-                "description": "Location for all resources."
             }
         }
     },
@@ -63,7 +62,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2016-03-30",
             "name": "[concat(parameters('virtualMachineName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'),'-nic')]",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "properties": {
                 "ipConfigurations": [
                     {
@@ -86,7 +85,7 @@
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2016-04-30-preview",
             "name": "[concat(parameters('virtualMachineName'),padleft(string(copyIndex(parameters('startNumberingAt'))),parameters('suffixLength'),'0'))]",
-            "location": "[parameters('location')]",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
                 "nicLoop"
             ],
@@ -140,7 +139,7 @@
                     ]
                 },
                 "protectedsettings": {
-                    "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File ./scripts/clone-post-config.ps1"
+                    "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./scripts/clone-post-config.ps1 -RegistrationCode ', parameters('teradiciRegistrationCode'))]"
                 }
             },
             "copy": {
