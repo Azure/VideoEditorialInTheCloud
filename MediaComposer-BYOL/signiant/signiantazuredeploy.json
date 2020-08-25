@@ -69,7 +69,7 @@
     "adminUsername": "[parameters('adminUsername')]",
     "adminPassword": "[parameters('adminPassword')]",
     "scriptFileName": "installSigniant.ps1",
-    "_githubLocation": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
+    "_githubLocation": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
     "signiantInstallName":"[parameters('signiantInstallName')]",
     "avidNexisClientInstallName":"[parameters('avidNexisClientInstallName')]",
     "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
