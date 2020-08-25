@@ -58,7 +58,7 @@
 		}
 	},
 	"variables": {
-		"githubBase": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
+		"githubBase": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
 		"_buildArtifactsLocation": "[concat('https://ssengreleng.blob.core.windows.net/nexisgold/19.8.0', '/installers')]",
 		"signiantTemplateLink": "[concat(variables('githubBase'),'/signiant/','signiantazuredeploy.json')]"
 	},

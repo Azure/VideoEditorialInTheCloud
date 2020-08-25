@@ -75,7 +75,7 @@ resource "random_string" "mediacomposer" {
 #########################
 variable "software_install_urls" {
   default ={
-    "mediacomposer_vm_script_url"   = "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL/scripts/setupMediaComposer_NVIDIA_20204.ps1"
+    "mediacomposer_vm_script_url"   = "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/MediaComposer-BYOL/scripts/setupMediaComposer_NVIDIA_20204.ps1"
     "avid_nexis_client_url"         = "https://eitcstorage.blob.core.windows.net/installers/AvidNEXIS_20.5.0_Client.zip"
     "mediaComposer_url"             = "https://eitcstorage.blob.core.windows.net/installers/Media_Composer_2020.4._Win.zip"
     "teradici_url"                  = "https://eitcstorage.blob.core.windows.net/installers/pcoip-agent-graphics_20.04.0.exe"

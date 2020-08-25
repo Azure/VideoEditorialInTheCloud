@@ -66,7 +66,7 @@
         "adminPassword": "[parameters('adminPassword')]",
         "scriptFileName": "installFilecatalyst.ps1",
         "vmSize": "Standard_D8_v3",
-        "_githubLocation": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
+        "_githubLocation": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
         "filecatalystInstallName": "[parameters('filecatalystInstallName')]",
         "avidNexisClientInstallName": "[parameters('avidNexisClientInstallName')]",
         "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",

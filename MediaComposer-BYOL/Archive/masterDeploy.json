@@ -122,7 +122,7 @@
 		}
 	},
 	"variables": {
-		"githubBase": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
+		"githubBase": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
 		"vnetTemplatelink": "[concat(variables('githubBase'),'/networking/',parameters('general-newOrExistingVnet'),'vnet.json')]",
 		"mediaComposerTemplateLink": "[concat(variables('githubBase'),'/mediaComposer/','mediacomposerazuredeploy.json')]",
 		"nexisTemplateLink": "[concat(variables('githubBase'),'/nexiscloud/','deploy-nexiscloud.json')]",

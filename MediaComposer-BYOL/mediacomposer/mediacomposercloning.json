@@ -144,7 +144,7 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL/scripts/clone-post-config.ps1"
+                        "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/MediaComposer-BYOL/scripts/clone-post-config.ps1"
                     ],
                     "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./clone-post-config.ps1 -RegistrationCode ', parameters('teradiciRegistrationCode'))]"
                 }

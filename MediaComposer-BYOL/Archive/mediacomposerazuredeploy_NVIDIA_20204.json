@@ -177,7 +177,7 @@
         "teradiciInstallFileName": "[parameters('teradiciInstallFileName')]",
         "nvidiaInstallFileName": "[parameters('nvidiaInstallFileName')]",
         "nexisClientInstallFileName": "[parameters('nexisClientInstallFileName')]",
-        "_githubLocation": "https://raw.githubusercontent.com/benjamin-ghis/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
+        "_githubLocation": "https://raw.githubusercontent.com/avid-technology/VideoEditorialInTheCloud/master/MediaComposer-BYOL",
         "scriptLocation": "[concat(variables('_githubLocation'), '/','scripts')]",
         "mediaComposerInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('mediaComposerFileName'))]",
         "teradiciInstallLocation": "[concat(parameters('_system-InstallURL'), '/','installers','/',variables('teradiciInstallFileName'))]",
