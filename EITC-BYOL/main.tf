@@ -27,7 +27,7 @@ provider "random" {
 #############################
 locals {
   resource_group_name               = "BYOL"
-  location                          = "eastus"
+  location                          = "westus2"
   
   admin_username                    = "azureuser"
   admin_password                    = "Password12345"

@@ -49,7 +49,7 @@ module "nexis_storage_servers" {
   base_index                      = var.base_index
   proximity_placement_group_id    = var.proximity_placement_group_id 
   vm_os_simple                    = "Debian"
-  vm_os_version                   = "8.20191118.0"
+  vm_os_version                   = "latest"
   vm_size                         = var.nexis_storage_vm_size
   vnet_subnet_id                  = var.subnet_id
   boot_diagnostics                = "false"
