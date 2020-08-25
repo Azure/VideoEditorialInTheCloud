@@ -28,7 +28,7 @@ Back up your video content to Nexis on Azure.
 
 <br />
 
-2) [Optional] If you don’t have a Vnet yet, either create one Vnet (with at least one subnet) directly within Azure Portal or click on Deploy New Vnet / Subnet below.
+2) [Optional] If you don’t have a Vnet yet, create one Vnet (with at least one subnet) directly within Azure Portal using the link below:
 
 <br />
 

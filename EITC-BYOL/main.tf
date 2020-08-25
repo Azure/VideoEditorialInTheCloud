@@ -51,7 +51,7 @@ locals {
 
   nexis_vm_size                     = "Standard_DS4_V2"
   nexis_base_index                  = 0
-  nexis_instances                   = 0
+  nexis_instances                   = 1
   nexis_storage_vm_number_public_ip = 0
   nexis_type                        = "CloudNearline" # options "CloudNearline" or "CloudOnline"
    
