@@ -1,3 +1,7 @@
+
+# This repo is deprecated
+# We recommend using https://github.com/avid-technology/VideoEditorialInTheCloud instead
+
 # Avid Video Editorial In Azure Cloud
  
 This repository covers projects related to installing Avid Editorial software in Azure subscription. 
